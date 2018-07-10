@@ -1,0 +1,14 @@
+.article {
+  margin-bottom: 10px;
+}
+
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 3em;
+  border-left: 0.5em #eee solid;
+}
+
+.content img {
+  max-width: 100%;
+}
