@@ -7,11 +7,14 @@ import BookIcon from '@material-ui/icons/Book';
 import InfoIcon from '@material-ui/icons/Info';
 // import Divider from '@material-ui/core/Divider';
 
-class DrawerList extends React.Component {
+const style = {
+  width: 260,
+};
 
+class DrawerList extends React.Component {
   render() {
     return (
-      <div>
+      <div style={style}>
         <List component="nav">
           <ListItem button>
             <ListItemIcon>
@@ -30,7 +33,6 @@ class DrawerList extends React.Component {
       </div>
     )
   }
-
 }
 
 export default DrawerList;

@@ -16,20 +16,24 @@ const renderers = {
 class Article extends React.Component {
 
   render() {
-    const { content, htmlMode } = this.props;
-
-    const theContent = content || '';
+    const { article, htmlMode } = this.props;
 
     return (
       <div className={styles.article}>
-        <div className={styles.content}>
-          <ReactMarkdown
-            source={theContent}
-            skipHtml={htmlMode === 'skip'}
-            escapeHtml={htmlMode === 'escape'}
-            renderers={renderers}
-          />
-        </div>
+        {
+          article ? (
+            <div className={styles.content}>
+              {/* TODO title */}
+              {/* TODO cover */}
+              <ReactMarkdown
+                source={article.content}
+                skipHtml={htmlMode === 'skip'}
+                escapeHtml={htmlMode === 'escape'}
+                renderers={renderers}
+              />
+            </div>
+          ) : null
+        }
       </div>
     )
   }
@@ -37,8 +41,18 @@ class Article extends React.Component {
 }
 
 Article.propTypes = {
-  content: PropTypes.string,
   htmlMode: PropTypes.oneOf(['skip', 'escape']),
+  article: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    subTitle: PropTypes.string,
+    coverUrl: PropTypes.string,
+    content: PropTypes.string,
+    labels: PropTypes.string,
+    category: PropTypes.string,
+    createdAt: PropTypes.instanceOf(Date),
+    updatedAt: PropTypes.instanceOf(Date),
+  }),
 };
 
 export default Article;

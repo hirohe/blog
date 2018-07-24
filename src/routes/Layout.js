@@ -6,14 +6,18 @@ import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import TwitterIcon from '../components/icons/Twitter';
 import GitHubIcon from '../components/icons/GitHub';
+import BrightnessMoonIcon from '@material-ui/icons/Brightness2';
 
 import DrawerList from './Layout/DrawerList';
+import Footer from './Layout/Footer';
 
-import styles from './Layout.css'
+import styles from './Layout.css';
 
 export const LayoutContext = React.createContext({
   title: '',
@@ -21,18 +25,43 @@ export const LayoutContext = React.createContext({
 
   openDrawer: false,
   toggleDrawer: () => {},
+
+  toggleDarkTheme: () => {},
+});
+
+const defaultTheme = createMuiTheme({
+  palette: {
+    type: 'light',
+  },
 });
 
 class Layout extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       title: 'App',
       openDrawer: false,
+      isDarkTheme: false,
+      theme: defaultTheme,
     };
   }
+
+  toggleDarkTheme = () => {
+    const { isDarkTheme } = this.state;
+    let theme = defaultTheme;
+    if (!isDarkTheme) {
+      document.querySelector('#root').classList.add('dark');
+      theme = createMuiTheme({
+        palette: {
+          type: 'dark',
+        },
+      });
+    } else {
+      document.querySelector('#root').classList.remove('dark');
+    }
+    this.setState({ theme, isDarkTheme: !isDarkTheme });
+  };
 
   updateTitle = (title) => {
     this.setState({ title });
@@ -45,19 +74,20 @@ class Layout extends React.Component {
   render() {
 
     const { children } = this.props;
-    const { title, openDrawer } = this.state;
+    const { title, openDrawer, theme } = this.state;
 
     const layoutContext = {
       title,
       updateTitle: this.updateTitle,
       openDrawer,
       toggleDrawer: this.toggleDrawer,
+      toggleDarkTheme: this.toggleDarkTheme,
     };
 
     return (
       <LayoutContext.Provider value={layoutContext}>
-        <div>
-          <AppBar position="static">
+        <MuiThemeProvider theme={theme}>
+          <AppBar position="fixed">
             <Toolbar>
               <IconButton color="inherit">
                 <MenuIcon onClick={()=>{this.toggleDrawer(true)}} />
@@ -77,14 +107,14 @@ class Layout extends React.Component {
                   width: 60,
                   height: 60,
                 }}
-                src="https://avatars2.githubusercontent.com/u/14357567?v=3&u=d3788aa9932f57e8e5aa64389d3f148535c36458&s=400"
+                src="https://avatars2.githubusercontent.com/u/14357567?s=200"
               />
-              <div className={styles.name}>Hirohe</div>
+              <div className={styles.name}>hirohe</div>
               <div className={styles.drawerInfoIcons}>
-                <IconButton>
+                <IconButton href="https://twitter.com/Heecn">
                   <TwitterIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton href="https://github.com/hirohe">
                   <GitHubIcon />
                 </IconButton>
               </div>
@@ -93,16 +123,23 @@ class Layout extends React.Component {
             <Divider />
 
             <DrawerList />
+
+            <div className={styles.footer}>
+              <IconButton>
+                <BrightnessMoonIcon onClick={this.toggleDarkTheme} />
+              </IconButton>
+            </div>
           </Drawer>
 
-          <div>
+          <div className={styles.content}>
             {children}
           </div>
-        </div>
+
+          <Footer author="hirohe" />
+        </MuiThemeProvider>
       </LayoutContext.Provider>
     )
   }
-
 }
 
 export default Layout;

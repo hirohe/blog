@@ -1,21 +1,60 @@
 import React from 'react';
-
 import { LayoutContext } from './Layout';
-import { Article } from '../components/Article';
+import { ArticleCardList } from '../components/Article';
+import { queryArticle } from '../services/Article';
 
 class IndexPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      articleList: {
+        records: [],
+        page: 1,
+        pageSize: 10,
+        total: 0,
+      },
+    };
+  }
+
+  openArticle = (id) => {
+    const { history } = this.props;
+    history.push({ pathname: `article/${id}` });
+  };
 
   componentDidMount() {
     const { updateTitle } = this.props.layoutContext;
-    updateTitle('首页')
+    updateTitle('首页');
+
+    const { articleList: { page, pageSize } } = this.state;
+
+    this.queryArticle(page, pageSize);
   }
 
+  queryArticle = (page, pageSize) => {
+    queryArticle(page, pageSize).then(articlePage => {
+      const { current, size, records, total } = articlePage;
+      this.setState({ articleList: { page: current, pageSize: size, records, total } });
+    }).catch(message => {
+
+    });
+  };
+
+  articleCardListOnChange = (page, pageSize) => {
+    this.queryArticle(page, pageSize);
+  };
+
   render() {
+    const { articleList } = this.state;
+
     return (
       <div>
-        <Article
-          content={`# hello\n\`\`\`js\nconst a = 'hello'\n\`\`\``}
-          htmlMode="escape"
+        <ArticleCardList
+          articles={articleList.records}
+          page={articleList.page}
+          pageSize={articleList.pageSize}
+          total={articleList.total}
+          onChange={this.articleCardListOnChange}
+          onOpen={this.openArticle}
         />
       </div>
     )

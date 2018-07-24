@@ -5,13 +5,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 25px;
+  padding-top: 25px;
 }
 
 .drawerInfoIcons {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.content {
+  padding-top: 56px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 16px;
+  float: right;
+  width: 100%;
+}
+
+.footer button {
+  float: right;
+  margin-right: 16px;
 }
 
 .name {
