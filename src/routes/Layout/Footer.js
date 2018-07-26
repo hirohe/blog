@@ -2,7 +2,7 @@ import React from 'react';
 
 const style = {
   padding: '16px 16px',
-  marginTop: 8,
+  marginTop: 64,
   background: '#666666',
   color: 'white',
 };

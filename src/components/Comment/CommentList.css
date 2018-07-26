@@ -1,0 +1,8 @@
+.commentList {
+  max-width: 800px;
+  margin: auto;
+}
+
+.commentList > div {
+  margin-bottom: 16px;
+}

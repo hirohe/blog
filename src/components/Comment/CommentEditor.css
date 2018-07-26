@@ -1,0 +1,60 @@
+.root {
+  display: flex;
+  align-items: start;
+  margin: auto;
+  padding: 16px 8px;
+  max-width: 750px;
+  background: #ddd;
+  border-radius: 4px;
+  border: solid 1px #ccc;
+}
+
+.avatar {
+  display: inline-block;
+}
+
+.editor {
+  display: flex;
+  width: 100%;
+}
+
+.editorPaper {
+  display: inline-block;
+  padding: 16px;
+  width: 100%;
+}
+
+.arrow {
+  display: inline-block;
+  width: 15px;
+  height: 20px;
+  position: relative;
+  top: 10px;
+  overflow: hidden;
+  box-shadow: 0 16px 10px -17px rgba(0,0,0,.5);
+}
+
+.arrow:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 9px;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  transform: rotate(45deg);
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)
+}
+
+.arrow.dark:after {
+  background: #424242;
+}
+
+.markdownLogo {
+  width: 20px;
+  float: right;
+}
+
+.field {
+  margin-right: 8px;
+}

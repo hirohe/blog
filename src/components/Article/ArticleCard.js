@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce'
-import dateFormat from 'date-fns/format';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -10,13 +9,9 @@ import CardActions from '@material-ui/core/CardActions';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 
-import CalendarTodayIcon from '../icons/CalendarToday';
-import FavoriteIcon from '../icons/Favorite';
-import { renderCategory } from '../../utils/common';
+import { ArticleInfo } from './Article';
 
 import styles from './ArticleCard.css';
-
-const DATE_FORMAT = 'YY-MM-DD HH:mm';
 
 const _toggleLike = debounce(() => {
   console.log('toggle like');
@@ -42,11 +37,7 @@ class ArticleCard extends React.Component {
   };
 
   render() {
-    const {
-      title, coverUrl, preview,
-      category, labels, likes,
-      createdAt, updatedAt,
-    } = this.props;
+    const { article } = this.props;
 
     const { liked } = this.state;
 
@@ -54,28 +45,20 @@ class ArticleCard extends React.Component {
       <Card className={styles.card}>
         <CardMedia
           className={styles.cardMedia}
-          image={coverUrl}
-          title="Contemplative Reptile"
+          image={article.coverUrl}
         />
         <CardContent>
-          <span className={styles.articleInfo}>
-            <span>
-              <CalendarTodayIcon />
-              {dateFormat(createdAt, DATE_FORMAT)}
-              <span style={{margin: '0 4px'}}>|</span>
-              {renderCategory(category)}
-            </span>
-          </span>
+          <ArticleInfo article={article} />
           <a onClick={this.openArticle} className={styles.title}>
             <Typography gutterBottom variant="headline" component="h2">
-              {title}
+              {article.title}
             </Typography>
           </a>
           <Typography component="p" className={styles.preview}>
-            {preview}
+            {article.preview}
           </Typography>
           {
-            labels ? labels.split(',').map((label, index) =>
+            article.labels ? article.labels.split(',').map((label, index) =>
               <Chip key={index} label={'#'+label} className={styles.label} />
             ) : null
           }
@@ -97,14 +80,16 @@ class ArticleCard extends React.Component {
 }
 
 ArticleCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  coverUrl: PropTypes.string,
-  category: PropTypes.string,
-  preview: PropTypes.string,
-  labels: PropTypes.string,
-  likes: PropTypes.number,
-  createdAt: PropTypes.instanceOf(Date),
-  updatedAt: PropTypes.instanceOf(Date),
+  article: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    subTitle: PropTypes.string,
+    coverUrl: PropTypes.string,
+    labels: PropTypes.string,
+    category: PropTypes.string,
+    createdAt: PropTypes.instanceOf(Date),
+    updatedAt: PropTypes.instanceOf(Date),
+  }),
   onOpen: PropTypes.func,
 };
 

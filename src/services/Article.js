@@ -9,3 +9,7 @@ export function queryArticle(page, pageSize, queryMap) {
 export function getArticle(id) {
   return request.get(`${baseUrl}/${id}`);
 }
+
+export function getArticleComments(id, page, pageSize) {
+  return request.get(`${baseUrl}/${id}/comments`, { params: { page, pageSize } });
+}

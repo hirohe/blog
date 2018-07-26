@@ -1,0 +1,36 @@
+.comment {
+  padding: 16px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+}
+
+.avatar > div {
+  margin: auto;
+}
+
+.info span {
+  margin-right: 8px;
+}
+
+.name {
+  font-size: 18px;
+  color: cadetblue;
+  margin-right: 16px;
+}
+
+.createdAt {
+  color: gray;
+  font-size: 8px;
+}
+
+.id {
+  font-size: 14px;
+  color: darkgray;
+}
+
+.replyBtn {
+  float: right;
+}

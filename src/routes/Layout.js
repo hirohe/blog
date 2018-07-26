@@ -14,6 +14,7 @@ import TwitterIcon from '../components/icons/Twitter';
 import GitHubIcon from '../components/icons/GitHub';
 import BrightnessMoonIcon from '@material-ui/icons/Brightness2';
 
+import ErrorContent from '../components/ErrorContent';
 import DrawerList from './Layout/DrawerList';
 import Footer from './Layout/Footer';
 
@@ -44,7 +45,15 @@ class Layout extends React.Component {
       openDrawer: false,
       isDarkTheme: false,
       theme: defaultTheme,
+
+      hasError: false,
+      errorMessage: null
     };
+  }
+
+  componentDidCatch(error, info) {
+    console.log(error.message, info);
+    this.setState({ hasError: true, errorMessage: error.message })
   }
 
   toggleDarkTheme = () => {
@@ -74,7 +83,7 @@ class Layout extends React.Component {
   render() {
 
     const { children } = this.props;
-    const { title, openDrawer, theme } = this.state;
+    const { title, openDrawer, theme, hasError, errorMessage } = this.state;
 
     const layoutContext = {
       title,
@@ -132,7 +141,11 @@ class Layout extends React.Component {
           </Drawer>
 
           <div className={styles.content}>
-            {children}
+            {
+              hasError ? (
+                <ErrorContent content={errorMessage} />
+              ) : children
+            }
           </div>
 
           <Footer author="hirohe" />

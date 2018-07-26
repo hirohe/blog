@@ -12,23 +12,20 @@ class ArticleCardList extends React.Component {
   };
 
   render() {
-    const { articles, ...pagination } = this.props;
+    const { articles, onOpen, ...pagination } = this.props;
 
     return (
       <div>
         <div className={styles.cardList}>
           {
-            articles ? articles.map(article =>
+            articles ? articles.map(article => {
+              article.createdAt = new Date(article.createdAt);
+              if (article.updatedAt) article.updatedAt = new Date(article.updatedAt);
+              return article;
+            }).map(article =>
               <ArticleCard
                 key={article.id}
-                title={article.title}
-                coverUrl={article.coverUrl}
-                preview={article.preview}
-                category={article.category}
-                labels={article.labels}
-                likes={article.likes}
-                createdAt={new Date(article.createdAt)}
-                updatedAt={article.updatedAt ? new Date(article.updatedAt) : null}
+                article={article}
                 onOpen={() => this.openArticle(article.id)}
               />
             ) : null

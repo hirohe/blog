@@ -16,17 +16,6 @@
   padding-right: 24px;
 }
 
-.articleInfo {
-  color: #888888;
-  font-size: 14px;
-}
-
-.articleInfo svg {
-  height: 14px;
-  position: relative;
-  top: 2px;
-}
-
 .preview {
   margin-bottom: 8px;
 }
