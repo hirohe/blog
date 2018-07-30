@@ -1,9 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import { LayoutContext } from './Layout';
 import Article from '../components/Article';
 import { CommentList, CommentEditor } from '../components/Comment';
 import ErrorContent from '../components/ErrorContent';
+import SubHeader from '../components/SubHeader';
 
-import { getArticle, getArticleComments } from '../services/Article';
+import { getArticle, getArticleComments, postComment } from '../services/Article';
+import { getComment } from '../services/Comment';
 
 import styles from './ArticlePage.css';
 
@@ -19,9 +23,17 @@ class ArticlePage extends React.Component {
         total: 0,
       },
 
+      refId: null,
+
       hasError: false,
       errorMessage: null,
     };
+  }
+
+  isCommentListInViewport(offset = 0) {
+    if (!this.commentList) return false;
+    const top = ReactDOM.findDOMNode(this.commentList).getBoundingClientRect().top;
+    return (top + offset) >= 0 && (top - offset) <= window.innerHeight;
   }
 
   getArticle = (id) => {
@@ -37,18 +49,31 @@ class ArticlePage extends React.Component {
   };
 
   getArticleComments = (id, page = 1, pageSize = 5) => {
+    const { layoutContext } = this.props;
     getArticleComments(id, page, pageSize).then(commentPage => {
       const { current, size, records, total } = commentPage;
       this.setState({ comments: { page: current, pageSize: size, total, records } });
     }).catch(() => {
-      // TODO
+      layoutContext.showMessage('获取评论失败！');
     })
   };
 
+  onWindowScroll = () => {
+    const { id } = this.props.match.params;
+    if (this.isCommentListInViewport()) {
+      window.removeEventListener('scroll', this.onWindowScroll);
+      this.getArticleComments(id);
+    }
+  };
+
   componentDidMount() {
+    const { updateTitle } = this.props.layoutContext;
+    updateTitle('文章');
+
     const { id } = this.props.match.params;
     this.getArticle(id);
-    this.getArticleComments(id);
+
+    window.addEventListener('scroll', this.onWindowScroll)
   }
 
   componentDidUpdate(preProps) {
@@ -66,8 +91,45 @@ class ArticlePage extends React.Component {
     this.getArticleComments(id, page, pageSize);
   };
 
+  onReply = (id) => {
+    this.setState({ refId: id });
+    ReactDOM.findDOMNode(this.commentEditor).scrollIntoView();
+    // offset
+    window.scrollBy(0, -50);
+  };
+
+  onGetRefComment = (refId) => {
+    return getComment(refId).then(refComment => {
+      refComment.createdAt = new Date(refComment.createdAt);
+      return refComment;
+    });
+  };
+
+  onRefIdRemove = () => {
+    this.setState({ refId: null });
+  };
+
+  onReplyArticle = (comment) => {
+    const { id } = this.props.match.params;
+    const { layoutContext } = this.props;
+    return postComment(id, comment).then(() => {
+      layoutContext.showMessage('发送成功');
+      this.getArticleComments(id);
+    }).catch(() => {
+
+    });
+  };
+
   render() {
-    const { article, comments, hasError, errorMessage } = this.state;
+    const {
+      article,
+      comments,
+
+      hasError,
+      errorMessage,
+
+      refId,
+    } = this.state;
 
     return (
       <React.Fragment>
@@ -78,14 +140,23 @@ class ArticlePage extends React.Component {
             <React.Fragment>
               <Article article={article} htmlMode="escape" />
               <div className={styles.commentEditor}>
-                <CommentEditor />
+                <CommentEditor
+                  ref={el => this.commentEditor = el}
+                  refId={refId}
+                  onRefIdRemove={this.onRefIdRemove}
+                  onReply={this.onReplyArticle}
+                />
               </div>
+              <SubHeader>评论</SubHeader>
               <CommentList
+                ref={el => this.commentList = el}
                 comments={comments.records}
                 page={comments.page}
                 pageSize={comments.pageSize}
                 total={comments.total}
                 onChange={this.commentListOnChange}
+                onReply={this.onReply}
+                onGetRefComment={this.onGetRefComment}
               />
             </React.Fragment>
           ) : null
@@ -95,4 +166,10 @@ class ArticlePage extends React.Component {
   }
 }
 
-export default ArticlePage;
+export default (props) => {
+  return (
+    <LayoutContext.Consumer>
+      {context => <ArticlePage {...props} layoutContext={context} />}
+    </LayoutContext.Consumer>
+  )
+};

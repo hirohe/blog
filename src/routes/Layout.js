@@ -14,6 +14,7 @@ import TwitterIcon from '../components/icons/Twitter';
 import GitHubIcon from '../components/icons/GitHub';
 import BrightnessMoonIcon from '@material-ui/icons/Brightness2';
 
+import MessageSnackbar from '../components/MessageSnackbar';
 import ErrorContent from '../components/ErrorContent';
 import DrawerList from './Layout/DrawerList';
 import Footer from './Layout/Footer';
@@ -28,6 +29,8 @@ export const LayoutContext = React.createContext({
   toggleDrawer: () => {},
 
   toggleDarkTheme: () => {},
+
+  showMessage: () => {},
 });
 
 const defaultTheme = createMuiTheme({
@@ -80,6 +83,10 @@ class Layout extends React.Component {
     this.setState({ openDrawer: !!open });
   };
 
+  showMessage = (message) => {
+    this.messageSnackbar.show(message);
+  };
+
   render() {
 
     const { children } = this.props;
@@ -91,6 +98,7 @@ class Layout extends React.Component {
       openDrawer,
       toggleDrawer: this.toggleDrawer,
       toggleDarkTheme: this.toggleDarkTheme,
+      showMessage: this.showMessage,
     };
 
     return (
@@ -149,6 +157,8 @@ class Layout extends React.Component {
           </div>
 
           <Footer author="hirohe" />
+
+          <MessageSnackbar ref={el => this.messageSnackbar = el} />
         </MuiThemeProvider>
       </LayoutContext.Provider>
     )

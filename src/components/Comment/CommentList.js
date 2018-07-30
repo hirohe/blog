@@ -7,7 +7,7 @@ import styles from './CommentList.css';
 
 class CommentList extends React.Component {
   render() {
-    const { comments, ...pagination } = this.props;
+    const { comments, onReply, onGetRefComment, ...pagination } = this.props;
 
     return (
       <React.Fragment>
@@ -20,6 +20,8 @@ class CommentList extends React.Component {
               <Comment
                 key={comment.id}
                 comment={comment}
+                onReply={onReply}
+                onGetRefComment={onGetRefComment}
               />
             ) : null
           }
@@ -38,6 +40,8 @@ CommentList.propTypes = {
   pageSize: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
+  onReply: PropTypes.func,
+  onGetRefComment: PropTypes.func,
 };
 
 export default CommentList;

@@ -1,6 +1,8 @@
 import FetchRequest from '@hirohe/fetch-request';
 
-const request = new FetchRequest();
+const request = new FetchRequest({
+  headers: { 'content-type': 'application/json' }
+});
 request.setupResponseInterceptor((response) => {
   if (response.data) {
     if (response.data.success) {

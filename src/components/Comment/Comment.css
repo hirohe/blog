@@ -15,6 +15,10 @@
   margin-right: 8px;
 }
 
+.refIdLabel {
+  height: 24px;
+}
+
 .name {
   font-size: 18px;
   color: cadetblue;
@@ -23,7 +27,7 @@
 
 .createdAt {
   color: gray;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .id {
@@ -33,4 +37,8 @@
 
 .replyBtn {
   float: right;
+}
+
+.commentContent {
+  word-break: break-all;
 }

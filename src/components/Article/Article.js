@@ -64,7 +64,7 @@ class Article extends React.PureComponent {
                   }
                 </div>
 
-                <Typography>
+                <Typography component="div">
                   <ReactMarkdown
                     source={article.content}
                     skipHtml={htmlMode === 'skip'}
