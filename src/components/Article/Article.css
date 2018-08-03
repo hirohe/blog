@@ -1,5 +1,4 @@
 .article {
-  max-width: 800px;
   margin: auto;
   padding-top: 32px;
 }
@@ -34,4 +33,9 @@ blockquote {
 
 .content img {
   max-width: 100%;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: center;
 }

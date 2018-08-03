@@ -1,0 +1,20 @@
+.root {
+  padding: 16px 16px;
+  margin-top: 64px;
+  background: #666666;
+  color: white;
+}
+
+.hint {
+  color: #ccc;
+  font-size: .5rem;
+  float: right;
+}
+
+.hint a {
+  color: #ccc;
+}
+
+.hint svg {
+  color: #ff4c2f;
+}

@@ -2,9 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import ShareIcon from '@material-ui/icons/Share';
+import CommentIcon from '@material-ui/icons/Comment';
+import Divider from '@material-ui/core/Divider';
 import ReactMarkdown from 'react-markdown';
 /* custom renderers */
 import CodeBlock from './MarkdownRenders/CodeBlock';
@@ -64,6 +69,8 @@ class Article extends React.PureComponent {
                   }
                 </div>
 
+                <Divider light />
+
                 <Typography component="div">
                   <ReactMarkdown
                     source={article.content}
@@ -73,6 +80,15 @@ class Article extends React.PureComponent {
                   />
                 </Typography>
               </CardContent>
+              <Divider light />
+              <CardActions className={styles.cardActions}>
+                <IconButton>
+                  <ShareIcon />
+                </IconButton>
+                <IconButton>
+                  <CommentIcon />
+                </IconButton>
+              </CardActions>
             </Card>
           ) : null
         }
