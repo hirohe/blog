@@ -137,8 +137,9 @@ class ArticlePage extends React.Component {
           hasError ? (
             <ErrorContent content={errorMessage} />
           ) : article ? (
-            <React.Fragment>
+            <div className={styles.content}>
               <Article article={article} htmlMode="escape" />
+              <SubHeader>评论</SubHeader>
               <div className={styles.commentEditor}>
                 <CommentEditor
                   ref={el => this.commentEditor = el}
@@ -147,7 +148,6 @@ class ArticlePage extends React.Component {
                   onReply={this.onReplyArticle}
                 />
               </div>
-              <SubHeader>评论</SubHeader>
               <CommentList
                 ref={el => this.commentList = el}
                 comments={comments.records}
@@ -158,7 +158,7 @@ class ArticlePage extends React.Component {
                 onReply={this.onReply}
                 onGetRefComment={this.onGetRefComment}
               />
-            </React.Fragment>
+            </div>
           ) : null
         }
       </React.Fragment>

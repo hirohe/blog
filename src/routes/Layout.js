@@ -14,6 +14,7 @@ import TwitterIcon from '../components/icons/Twitter';
 import GitHubIcon from '../components/icons/GitHub';
 import BrightnessMoonIcon from '@material-ui/icons/Brightness2';
 
+import LifeGame from '../components/LifeGame/LifeGame';
 import MessageSnackbar from '../components/MessageSnackbar';
 import ErrorContent from '../components/ErrorContent';
 import DrawerList from './Layout/DrawerList';
@@ -126,7 +127,13 @@ class Layout extends React.Component {
                 }}
                 src="https://avatars2.githubusercontent.com/u/14357567?s=200"
               />
-              <div className={styles.name}>hirohe</div>
+              <Typography
+                variant="headline" component="div"
+                gutterBottom
+                className={styles.name}
+              >
+                hirohe
+              </Typography>
               <div className={styles.drawerInfoIcons}>
                 <IconButton href="https://twitter.com/Heecn">
                   <TwitterIcon />
@@ -140,6 +147,8 @@ class Layout extends React.Component {
             <Divider />
 
             <DrawerList />
+
+            <LifeGame />
 
             <div className={styles.footer}>
               <IconButton>

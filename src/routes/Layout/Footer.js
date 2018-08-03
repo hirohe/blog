@@ -1,16 +1,15 @@
 import React from 'react';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
-const style = {
-  padding: '16px 16px',
-  marginTop: 64,
-  background: '#666666',
-  color: 'white',
-};
+import styles from './Footer.css';
 
 export default function Footer({ author }) {
   return (
-    <div style={style}>
+    <div className={styles.root}>
       {`© - ${new Date().getFullYear()} ${author}  (^_^)/`}
+      <span className={styles.hint}>
+        with <FavoriteIcon fontSize="inherit" /> <a href="https://material-ui.com">material-ui</a>
+      </span>
     </div>
   );
 }
