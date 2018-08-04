@@ -14,7 +14,6 @@ import TwitterIcon from '../components/icons/Twitter';
 import GitHubIcon from '../components/icons/GitHub';
 import BrightnessMoonIcon from '@material-ui/icons/Brightness2';
 
-import LifeGame from '../components/LifeGame/LifeGame';
 import MessageSnackbar from '../components/MessageSnackbar';
 import ErrorContent from '../components/ErrorContent';
 import DrawerList from './Layout/DrawerList';
@@ -147,8 +146,6 @@ class Layout extends React.Component {
             <Divider />
 
             <DrawerList />
-
-            <LifeGame />
 
             <div className={styles.footer}>
               <IconButton>

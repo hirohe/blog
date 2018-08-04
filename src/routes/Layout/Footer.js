@@ -1,7 +1,7 @@
 import React from 'react';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import styles from './Footer.css';
+import styles from './Footer.scss';
 
 export default function Footer({ author }) {
   return (
