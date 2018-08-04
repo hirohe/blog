@@ -7,14 +7,12 @@
 
 .hint {
   color: #ccc;
-  font-size: .5rem;
+  font-size: .8rem;
   float: right;
-}
-
-.hint a {
-  color: #ccc;
-}
-
-.hint svg {
-  color: #ff4c2f;
+  a {
+    color: #ccc;
+  }
+  svg {
+    color: #ff4c2f;
+  }
 }
