@@ -34,6 +34,7 @@ class IndexPage extends React.Component {
   };
 
   componentDidMount() {
+    console.log('index page did mount');
     const { updateTitle } = this.props.layoutContext;
     updateTitle('首页');
 
