@@ -8,7 +8,7 @@ export default function Footer({ author }) {
     <div className={styles.root}>
       {`© - ${new Date().getFullYear()} ${author}  (^_^)/`}
       <span className={styles.hint}>
-        with <FavoriteIcon fontSize="inherit" /> <a href="https://material-ui.com">material-ui</a>
+        build with <FavoriteIcon fontSize="inherit" /> <a href="https://material-ui.com">material-ui</a>
       </span>
     </div>
   );

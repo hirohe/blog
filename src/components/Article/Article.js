@@ -7,7 +7,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import ShareIcon from '@material-ui/icons/Share';
 import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider';
 import ReactMarkdown from 'react-markdown';
@@ -16,6 +15,8 @@ import CodeBlock from './MarkdownRenders/CodeBlock';
 import BlockQuote from './MarkdownRenders/BlockQuote';
 import CalendarTodayIcon from '../icons/CalendarToday';
 import { renderCategory } from '../../utils/common';
+
+import CommonShareButton from '../CommonShareButton';
 
 import styles from './Article.css';
 import dateFormat from "date-fns/format";
@@ -55,7 +56,7 @@ class Article extends React.PureComponent {
                 image={article.coverUrl}
               />
               <CardContent className={styles.content}>
-                <Typography gutterBottom variant="headline" component="h2">
+                <Typography gutterBottom variant="h5" component="h2">
                   {article.title}
                 </Typography>
 
@@ -82,9 +83,7 @@ class Article extends React.PureComponent {
               </CardContent>
               <Divider light />
               <CardActions className={styles.cardActions}>
-                <IconButton>
-                  <ShareIcon />
-                </IconButton>
+                <CommonShareButton />
                 <IconButton>
                   <CommentIcon />
                 </IconButton>

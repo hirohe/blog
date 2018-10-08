@@ -13,13 +13,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import TwitterIcon from '../components/icons/Twitter';
 import GitHubIcon from '../components/icons/GitHub';
 import BrightnessMoonIcon from '@material-ui/icons/Brightness2';
+import BrightnessSunIcon from '@material-ui/icons/Brightness5';
 
 import MessageSnackbar from '../components/MessageSnackbar';
 import ErrorContent from '../components/ErrorContent';
 import DrawerList from './Layout/DrawerList';
 import Footer from './Layout/Footer';
 
-import styles from './Layout.css';
+import styles from './Layout.scss';
 
 export const LayoutContext = React.createContext({
   title: '',
@@ -87,6 +88,11 @@ class Layout extends React.Component {
     this.messageSnackbar.show(message);
   };
 
+  goto = (path) => {
+    this.props.history.push(path);
+    this.setState({ openDrawer: false });
+  };
+
   render() {
 
     const { children } = this.props;
@@ -110,13 +116,22 @@ class Layout extends React.Component {
                 <MenuIcon onClick={()=>{this.toggleDrawer(true)}} />
               </IconButton>
 
-              <Typography variant="title" color="inherit" className={styles.appBarTitle}>
+              <Typography variant="h6" color="inherit" className={styles.appBarTitle}>
                 {title}
               </Typography>
             </Toolbar>
           </AppBar>
 
           <Drawer open={openDrawer} onClose={()=>{this.toggleDrawer(false)}}>
+            <div>
+              <IconButton className={styles.brightnessBtn}>
+                {theme.palette.type === 'light' ? (
+                  <BrightnessMoonIcon onClick={this.toggleDarkTheme} />
+                ) : (
+                  <BrightnessSunIcon onClick={this.toggleDarkTheme} />
+                )}
+              </IconButton>
+            </div>
             <div className={styles.drawerInfo}>
               <Avatar
                 alt="hirohe"
@@ -127,7 +142,7 @@ class Layout extends React.Component {
                 src="https://avatars2.githubusercontent.com/u/14357567?s=200"
               />
               <Typography
-                variant="headline" component="div"
+                variant="h5" component="div"
                 gutterBottom
                 className={styles.name}
               >
@@ -145,13 +160,8 @@ class Layout extends React.Component {
 
             <Divider />
 
-            <DrawerList />
+            <DrawerList goto={this.goto} />
 
-            <div className={styles.footer}>
-              <IconButton>
-                <BrightnessMoonIcon onClick={this.toggleDarkTheme} />
-              </IconButton>
-            </div>
           </Drawer>
 
           <div className={styles.content}>

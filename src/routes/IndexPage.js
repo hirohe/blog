@@ -2,17 +2,23 @@ import React from 'react';
 import qs from 'qs';
 import { LayoutContext } from './Layout';
 import { ArticleCardList } from '../components/Article';
+import LoadingMask from '../components/LoadingMask';
 import { queryArticle } from '../services/Article';
+import ErrorContent from '../components/ErrorContent';
 
 class IndexPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingArticles: false,
       articleList: {
         records: [],
         page: 1,
         pageSize: 10,
         total: 0,
+
+        hasError: false,
+        errorMessage: null,
       },
     };
   }
@@ -34,7 +40,6 @@ class IndexPage extends React.Component {
   };
 
   componentDidMount() {
-    console.log('index page did mount');
     const { updateTitle } = this.props.layoutContext;
     updateTitle('首页');
 
@@ -55,12 +60,15 @@ class IndexPage extends React.Component {
   }
 
   queryArticle = (page, pageSize, labels) => {
+    this.setState({ loadingArticles: true });
     queryArticle(page, pageSize, { labels }).then(articlePage => {
       const { current, size, records, total } = articlePage;
       this.setState({ articleList: { page: current, pageSize: size, records, total } });
-    }).catch(message => {
-      // TODO
-    });
+    }).catch(errorMessage => {
+      this.setState({ hasError: true, errorMessage });
+    }).finally(() => {
+      this.setState({ loadingArticles: false });
+    })
   };
 
   articleCardListOnChange = (page, pageSize) => {
@@ -70,18 +78,32 @@ class IndexPage extends React.Component {
   };
 
   render() {
-    const { articleList } = this.state;
+    const {
+      articleList,
+      loadingArticles,
+
+      hasError,
+      errorMessage,
+    } = this.state;
 
     return (
       <div>
-        <ArticleCardList
-          articles={articleList.records}
-          page={articleList.page}
-          pageSize={articleList.pageSize}
-          total={articleList.total}
-          onChange={this.articleCardListOnChange}
-          onOpen={this.openArticle}
-        />
+        <LoadingMask loading={loadingArticles}>
+          {
+            hasError ? (
+              <ErrorContent content={errorMessage} />
+            ) : (
+              <ArticleCardList
+                articles={articleList.records}
+                page={articleList.page}
+                pageSize={articleList.pageSize}
+                total={articleList.total}
+                onChange={this.articleCardListOnChange}
+                onOpen={this.openArticle}
+              />
+            )
+          }
+        </LoadingMask>
       </div>
     )
   }

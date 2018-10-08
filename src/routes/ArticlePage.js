@@ -148,6 +148,8 @@ class ArticlePage extends React.Component {
                   onReply={this.onReplyArticle}
                 />
               </div>
+
+              <SubHeader>评论列表</SubHeader>
               <CommentList
                 ref={el => this.commentList = el}
                 comments={comments.records}

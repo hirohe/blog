@@ -105,7 +105,7 @@ module.exports = {
       },
       // scss file
       {
-        test: /\.scss/,
+        test: /\.(scss|sass)/,
         use: [
           require.resolve('style-loader'),
           {

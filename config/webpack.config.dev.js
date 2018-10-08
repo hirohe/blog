@@ -9,6 +9,7 @@ const paths = require('./paths');
 
 // https://webpack.js.org/configuration/dev-server/
 const devServer = {
+  host: '0.0.0.0',
   hot: true,
   compress: true,
   contentBase: paths.appPublic,
@@ -16,7 +17,8 @@ const devServer = {
   overlay: true,
   proxy: prepareProxy({
     '/api': {
-      target: 'http://localhost:8080',
+      target: 'https://blog.hirohe.me',
+      secure: false,
     },
   }, paths.appPublic)
 };
@@ -37,6 +39,7 @@ module.exports = {
         loader: "babel-loader",
         options: {
           cacheDirectory: true,
+          plugins: ['react-hot-loader/babel'],
         },
       },
       // css file
@@ -112,9 +115,9 @@ module.exports = {
           },
         ],
       },
-      // scss file
+      // scss sass file
       {
-        test: /\.scss/,
+        test: /\.(scss|sass)/,
         use: [
           require.resolve('style-loader'),
           {
@@ -169,6 +172,7 @@ module.exports = {
       inject: true,
       template: paths.appHtml,
     }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   devServer,
 };

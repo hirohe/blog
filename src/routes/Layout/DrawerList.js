@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -16,14 +17,14 @@ class DrawerList extends React.Component {
     return (
       <div style={style}>
         <List component="nav">
-          <ListItem button>
+          <ListItem button onClick={()=>{this.props.goto('/article')}}>
             <ListItemIcon>
               <BookIcon />
             </ListItemIcon>
             <ListItemText primary="文章" />
           </ListItem>
 
-          <ListItem button>
+          <ListItem button onClick={()=>{this.props.goto('/about')}}>
             <ListItemIcon>
               <InfoIcon />
             </ListItemIcon>

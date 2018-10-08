@@ -177,7 +177,7 @@ class CommentEditor extends React.Component {
                 {`${content.length}/${content_max_length}`}
                 </span>
               <Tooltip title="发送">
-                <Slide in={!replying} direction={replying ? 'left' : 'right'}>
+                <Slide in={!replying} direction={replying ? 'left' : 'right'} timeout={replying ? 200 : 1000}>
                   <Button
                     variant="fab"
                     color="primary"

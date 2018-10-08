@@ -9,7 +9,7 @@ const style = {
 class SubHeader extends React.PureComponent {
   render() {
     return (
-      <Typography style={style} variant="subheading" gutterBottom>
+      <Typography style={style} variant="subtitle1" gutterBottom>
         {this.props.children}
       </Typography>
     )
