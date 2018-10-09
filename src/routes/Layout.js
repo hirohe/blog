@@ -20,7 +20,7 @@ import ErrorContent from '../components/ErrorContent';
 import DrawerList from './Layout/DrawerList';
 import Footer from './Layout/Footer';
 
-import styles from './Layout.scss';
+import styles from './Layout.module.sass';
 
 export const LayoutContext = React.createContext({
   title: '',

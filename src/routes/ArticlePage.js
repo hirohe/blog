@@ -9,7 +9,7 @@ import SubHeader from '../components/SubHeader';
 import { getArticle, getArticleComments, postComment } from '../services/Article';
 import { getComment } from '../services/Comment';
 
-import styles from './ArticlePage.css';
+import styles from './ArticlePage.module.sass';
 
 class ArticlePage extends React.Component {
   constructor(props) {

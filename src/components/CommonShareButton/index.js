@@ -14,12 +14,15 @@ class CommonShareButton extends React.PureComponent {
       onShareReject = () => {};
     }
 
+    const url = window.location.href;
+    const { title, text } = this.props;
+
     if (navigator.share) {
       // web share api
       const shareData = {
-        title: 'test',
-        text: 'test page',
-        url: 'https://blog.hirohe.me',
+        title,
+        text,
+        url,
       };
       navigator.share(shareData).then(() => {
         onShareSuccess();
@@ -28,8 +31,7 @@ class CommonShareButton extends React.PureComponent {
       });
     } else {
       // fallback to copy-paste
-      const text = `...`;
-      const success = copy(text);
+      const success = copy(url);
       if (success) {
         alert('已经复制了链接~');
         onShareSuccess();
@@ -52,6 +54,15 @@ class CommonShareButton extends React.PureComponent {
 CommonShareButton.propTypes = {
   onShareSuccess: PropTypes.func,
   onShareReject: PropTypes.func,
+  title: PropTypes.string,
+  text: PropTypes.string,
+};
+
+CommonShareButton.defaultProps = {
+  onShareSuccess: () => {},
+  onShareReject: () => {},
+  title: '',
+  text: '',
 };
 
 export default CommonShareButton;

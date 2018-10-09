@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { ArticleInfo } from './Article';
 
-import styles from './ArticleCard.css';
+import styles from './ArticleCard.module.sass';
 
 const _toggleLike = debounce(() => {
   console.log('toggle like');
@@ -39,7 +39,7 @@ class ArticleCard extends React.Component {
   render() {
     const { article } = this.props;
 
-    const { liked } = this.state;
+    // const { liked } = this.state;
 
     return (
       <Card className={styles.card}>

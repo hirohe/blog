@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import SimplePagination from '../SimplePagination';
 
-import styles from './CommentList.css';
+import styles from './CommentList.module.sass';
 
 class CommentList extends React.Component {
   render() {

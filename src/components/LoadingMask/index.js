@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import styles from './index.scss';
+import styles from './index.module.sass';
 
 class LoadingMask extends React.Component {
 
@@ -43,7 +43,6 @@ class LoadingMask extends React.Component {
 
   render() {
     const { children, loading } = this.props;
-    const {  } = this.state;
 
     return (
       <div className={styles.root}>

@@ -3,7 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { LayoutContext } from './Layout';
 
-import styles from './AboutPage.sass';
+import styles from './AboutPage.module.sass';
 
 class AboutPage extends React.Component {
   componentDidMount() {
@@ -13,7 +13,7 @@ class AboutPage extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.root}>
         <div className={styles.avatarWrapper}>
           <Avatar
             alt="hirohe"
@@ -28,6 +28,10 @@ class AboutPage extends React.Component {
         <div className={styles.content}>
           <Typography variant="h6" gutterBottom>
             与我联系
+          </Typography>
+
+          <Typography>
+
           </Typography>
         </div>
       </div>

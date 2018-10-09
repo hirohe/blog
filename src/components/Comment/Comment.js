@@ -16,7 +16,7 @@ import withWidth from '@material-ui/core/withWidth';
 
 import IdenticonAvatar from '../IdenticonAvatar';
 
-import styles from './Comment.css';
+import styles from './Comment.module.sass';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class Comment extends React.Component {
     const {
       comment: {
         id,
-        articleId,
+        // articleId,
         refId,
         name,
         nameHash,

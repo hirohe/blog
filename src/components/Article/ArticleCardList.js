@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ArticleCard from './ArticleCard';
 import SimplePagination from '../SimplePagination';
 
-import styles from './ArticleCardList.css';
+import styles from './ArticleCardList.module.sass';
 
 class ArticleCardList extends React.Component {
   openArticle = (id) => {

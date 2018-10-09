@@ -21,7 +21,7 @@ import IdenticonAvatar from '../IdenticonAvatar';
 import markdownPng from '../../assets/markdown.png';
 import { md5 } from '../../utils/common';
 
-import styles from './CommentEditor.css';
+import styles from './CommentEditor.module.sass';
 
 const content_max_length = 1000;
 

@@ -18,7 +18,7 @@ import { renderCategory } from '../../utils/common';
 
 import CommonShareButton from '../CommonShareButton';
 
-import styles from './Article.css';
+import styles from './Article.module.sass';
 import dateFormat from "date-fns/format";
 
 const renderers = {
