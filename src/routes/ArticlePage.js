@@ -10,6 +10,7 @@ import { getArticle, getArticleComments, postComment } from '../services/Article
 import { getComment } from '../services/Comment';
 
 import styles from './ArticlePage.module.sass';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class ArticlePage extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class ArticlePage extends React.Component {
         pageSize: 5,
         total: 0,
       },
+      loadingComments: false,
 
       refId: null,
 
@@ -50,11 +52,14 @@ class ArticlePage extends React.Component {
 
   getArticleComments = (id, page = 1, pageSize = 5) => {
     const { layoutContext } = this.props;
+    this.setState({ loadingComments: true });
     getArticleComments(id, page, pageSize).then(commentPage => {
       const { current, size, records, total } = commentPage;
       this.setState({ comments: { page: current, pageSize: size, total, records } });
     }).catch(() => {
       layoutContext.showMessage('获取评论失败！');
+    }).finally(() => {
+      this.setState({ loadingComments: false });
     })
   };
 
@@ -124,6 +129,7 @@ class ArticlePage extends React.Component {
     const {
       article,
       comments,
+      loadingComments,
 
       hasError,
       errorMessage,
@@ -154,6 +160,11 @@ class ArticlePage extends React.Component {
               </div>
 
               <SubHeader>评论列表 {comments.total ? comments.total : 0} 条</SubHeader>
+              {loadingComments ? (
+                <div style={{ textAlign: 'center' }}>
+                  <CircularProgress size={30} />
+                </div>
+              ) : null}
               <CommentList
                 ref={el => this.commentList = el}
                 comments={comments.records}
