@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 const style = {
   paddingLeft: '1rem',
   marginTop: '0.35rem',
+  borderLeft: 'solid 5px #ccc',
 };
 
 class SubHeader extends React.PureComponent {
