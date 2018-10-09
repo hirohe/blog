@@ -92,7 +92,7 @@ class ArticlePage extends React.Component {
   };
 
   onReply = (id) => {
-    this.setState({ refId: id });
+    if (id) this.setState({ refId: id });
     ReactDOM.findDOMNode(this.commentEditor).scrollIntoView();
     // offset
     window.scrollBy(0, -50);
@@ -138,7 +138,11 @@ class ArticlePage extends React.Component {
             <ErrorContent content={errorMessage} />
           ) : article ? (
             <div className={styles.content}>
-              <Article article={article} htmlMode="escape" />
+              <Article
+                article={article}
+                htmlMode="escape"
+                onReply={this.onReply}
+              />
               <SubHeader>评论</SubHeader>
               <div className={styles.commentEditor}>
                 <CommentEditor
@@ -149,7 +153,7 @@ class ArticlePage extends React.Component {
                 />
               </div>
 
-              <SubHeader>评论列表</SubHeader>
+              <SubHeader>评论列表 {comments.total ? comments.total : 0} 条</SubHeader>
               <CommentList
                 ref={el => this.commentList = el}
                 comments={comments.records}

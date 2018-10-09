@@ -84,7 +84,7 @@ class Article extends React.PureComponent {
               <Divider light />
               <CardActions className={styles.cardActions}>
                 <CommonShareButton />
-                <IconButton>
+                <IconButton onClick={()=>{this.props.onReply()}}>
                   <CommentIcon />
                 </IconButton>
               </CardActions>
@@ -109,6 +109,7 @@ Article.propTypes = {
     createdAt: PropTypes.instanceOf(Date),
     updatedAt: PropTypes.instanceOf(Date),
   }),
+  onReply: PropTypes.func.isRequired,
 };
 
 export default Article;
