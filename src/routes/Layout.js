@@ -38,6 +38,10 @@ const defaultTheme = createMuiTheme({
   palette: {
     type: 'light',
   },
+  // https://material-ui.com/style/typography/#migration-to-typography-v2
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 class Layout extends React.Component {
