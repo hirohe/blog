@@ -31,7 +31,7 @@ class ArticleCardList extends React.Component {
             ) : null
           }
         </div>
-        <div style={{textAlign: 'center'}}>
+        <div className={styles.paginationWrapper}>
           <SimplePagination pagination={pagination} />
         </div>
       </div>
