@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import withTheme from '@material-ui/core/styles/withTheme';
 import SendIcon from '@material-ui/icons/Send';
 import withWidth from '@material-ui/core/withWidth';
@@ -178,15 +179,15 @@ class CommentEditor extends React.Component {
                 </span>
               <Tooltip title="发送">
                 <Slide in={!replying} direction={replying ? 'left' : 'right'} timeout={replying ? 200 : 1000}>
-                  <Button
-                    variant="fab"
-                    color="primary"
-                    mini
-                    onClick={this.onReply}
-                    className={styles.sendBtn}
-                  >
-                    <SendIcon />
-                  </Button>
+                  <div style={{ float: 'right' }}>
+                    <Fab
+                      color="primary"
+                      size="small"
+                      onClick={this.onReply}
+                    >
+                      <SendIcon />
+                    </Fab>
+                  </div>
                 </Slide>
               </Tooltip>
               {

@@ -1,18 +1,18 @@
-import React from 'react';
-import createHashHistory from 'history/createHashHistory';
+import React, { Suspense } from 'react';
+import { createHashHistory } from 'history';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
-import Loadable from 'react-loadable';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Layout from './routes/Layout';
 
 const history = createHashHistory();
 
-function loadable(loader) {
-  return Loadable({
-    loader,
-    loading: () => null,
-  });
+const IndexPage = React.lazy(() => import(/* webpackChunkName: 'IndexPage' */'./routes/IndexPage'));
+const ArticlePage = React.lazy(() => import(/* webpackChunkName: 'ArticlePage' */'./routes/ArticlePage'));
+const AboutPage = React.lazy(() => import(/* webpackChunkName: 'AboutPage' */'./routes/AboutPage'));
+
+function Loading() {
+  return <div style={{ textAlign: 'center', marginTop: '20%' }}><CircularProgress /></div>
 }
 
 class RouterConfig extends React.Component {
@@ -21,12 +21,14 @@ class RouterConfig extends React.Component {
     return (
       <Router history={history}>
         <Layout history={history}>
-          <Switch>
-            <Route exact path="/articles" component={loadable(() => import('./routes/IndexPage'))} />
-            <Route exact path="/article/:id" component={loadable(() => import('./routes/ArticlePage'))} />
-            <Route exact path="/about" component={loadable(() => import('./routes/AboutPage'))} />
-            <Redirect from="*" to="/articles" />
-          </Switch>
+          <Suspense fallback={<Loading />}>
+            <Switch>
+              <Route exact path="/articles" component={props => <IndexPage {...props} />} />
+              <Route exact path="/article/:id" component={props => <ArticlePage {...props} />} />
+              <Route exact path="/about" component={props => <AboutPage {...props} />} />
+              <Redirect from="*" to="/articles" />
+            </Switch>
+          </Suspense>
         </Layout>
       </Router>
     )

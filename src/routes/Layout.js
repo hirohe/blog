@@ -116,8 +116,8 @@ class Layout extends React.Component {
         <MuiThemeProvider theme={theme}>
           <AppBar position="fixed">
             <Toolbar>
-              <IconButton color="inherit">
-                <MenuIcon onClick={()=>{this.toggleDrawer(true)}} />
+              <IconButton onClick={()=>{this.toggleDrawer(true)}} color="inherit">
+                <MenuIcon />
               </IconButton>
 
               <Typography variant="h6" color="inherit" className={styles.appBarTitle}>
@@ -128,11 +128,11 @@ class Layout extends React.Component {
 
           <Drawer open={openDrawer} onClose={()=>{this.toggleDrawer(false)}}>
             <div>
-              <IconButton className={styles.brightnessBtn}>
+              <IconButton onClick={this.toggleDarkTheme} className={styles.brightnessBtn}>
                 {theme.palette.type === 'light' ? (
-                  <BrightnessMoonIcon onClick={this.toggleDarkTheme} />
+                  <BrightnessMoonIcon />
                 ) : (
-                  <BrightnessSunIcon onClick={this.toggleDarkTheme} />
+                  <BrightnessSunIcon />
                 )}
               </IconButton>
             </div>

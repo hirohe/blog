@@ -39,20 +39,26 @@ class AboutPage extends React.Component {
           </Typography>
           <Grid container justify="center" spacing={16}>
             <Grid item>
-              <Chip
-                icon={<TwitterIcon />}
-                label="@Heecn"
-                color="primary"
-                classes={{
-                  colorPrimary: styles.twitterPrimary
-                }}
-              />
+              <a className={styles.chipLink} href="https://twitter.com/Heecn">
+                <Chip
+                  icon={<TwitterIcon />}
+                  label="@Heecn"
+                  color="primary"
+                  onClick={()=>{}}
+                  classes={{
+                    colorPrimary: styles.twitterPrimary
+                  }}
+                />
+              </a>
             </Grid>
             <Grid item>
-              <Chip
-                icon={<GitHubIcon />}
-                label="hirohe"
-              />
+              <a className={styles.chipLink} href="https://github.com/hirohe">
+                <Chip
+                  icon={<GitHubIcon />}
+                  label="hirohe"
+                  onClick={()=>{}}
+                />
+              </a>
             </Grid>
             <Grid item>
               <Chip

@@ -144,19 +144,24 @@ class ArticlePage extends React.Component {
             <ErrorContent content={errorMessage} />
           ) : article ? (
             <div className={styles.content}>
-              <Article
-                article={article}
-                htmlMode="escape"
-                onReply={this.onReply}
-              />
-              <SubHeader>评论</SubHeader>
-              <div className={styles.commentEditor}>
-                <CommentEditor
-                  ref={el => this.commentEditor = el}
-                  refId={refId}
-                  onRefIdRemove={this.onRefIdRemove}
-                  onReply={this.onReplyArticle}
+              <div className={styles.block}>
+                <Article
+                  article={article}
+                  htmlMode="escape"
+                  onReply={this.onReply}
                 />
+              </div>
+
+              <div className={styles.block}>
+                <SubHeader>评论</SubHeader>
+                <div className={styles.commentEditor}>
+                  <CommentEditor
+                    ref={el => this.commentEditor = el}
+                    refId={refId}
+                    onRefIdRemove={this.onRefIdRemove}
+                    onReply={this.onReplyArticle}
+                  />
+                </div>
               </div>
 
               <SubHeader>评论列表 {comments.total ? comments.total : 0} 条</SubHeader>

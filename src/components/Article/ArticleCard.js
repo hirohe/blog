@@ -49,11 +49,15 @@ class ArticleCard extends React.Component {
         />
         <CardContent>
           <ArticleInfo article={article} />
-          <a onClick={this.openArticle} className={styles.title}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {article.title}
-            </Typography>
-          </a>
+          <Typography
+            className={styles.title}
+            onClick={this.openArticle}
+            gutterBottom
+            variant="h5"
+            component="h2"
+          >
+            {article.title}
+          </Typography>
           <Typography component="p" className={styles.preview}>
             {article.preview}
           </Typography>
