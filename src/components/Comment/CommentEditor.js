@@ -6,18 +6,17 @@ import delay from 'lodash/delay';
 import ReactMarkdown from 'react-markdown';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
-import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
 import withTheme from '@material-ui/core/styles/withTheme';
-import SendIcon from '@material-ui/icons/Send';
 import withWidth from '@material-ui/core/withWidth';
+import Grid from '@material-ui/core/Grid';
 
 import { LayoutContext } from '../../routes/Layout';
+import SendButton from './SendButton';
 import IdenticonAvatar from '../IdenticonAvatar';
 import markdownPng from '../../assets/markdown.png';
 import { md5 } from '../../utils/common';
@@ -77,7 +76,7 @@ class CommentEditor extends React.Component {
     this.setState({ showPreview: !showPreview });
   };
 
-  onReply = () => {
+  onReply = async () => {
     const { showMessage } = this.props.layoutContext;
     const { onReply } = this.props;
     if (typeof onReply === 'function') {
@@ -85,21 +84,21 @@ class CommentEditor extends React.Component {
       const { name, email, content } = this.state;
 
       // check
-      if (name.length <= 0) {
+      if (name.length <= 2) {
         showMessage('请输入昵称');
-        return;
+        return false;
       }
       if (email.length > 0 && !/.+@.+\..+/.test(email)) {
         showMessage('email不正确');
-        return;
+        return false;
       }
       if (content.length <= 0) {
         showMessage('请输入评论');
-        return;
+        return false;
       }
       if (content.length > content_max_length) {
         showMessage('评论长度不能超过500');
-        return;
+        return false;
       }
 
       this.setState({ replying: true });
@@ -110,7 +109,9 @@ class CommentEditor extends React.Component {
         this.setState(this.initialState());
       }).finally(() => {
         this.setState({ replying: false });
-      })
+      });
+
+      return true;
     }
   };
 
@@ -134,25 +135,35 @@ class CommentEditor extends React.Component {
             className={themeType === 'dark' ? classnames(styles.arrow, styles.dark) : styles.arrow}
           />
           <Paper className={styles.editorPaper}>
-            <img className={styles.markdownLogo} src={markdownPng} alt="markdown" />
-            <TextField
-              label="昵称"
-              placeholder="anonymous 可选"
-              onChange={this.nameOnChange}
-              className={styles.field}
-              inputRef={el => this.nameInputEl = el}
-            />
-            <TextField
-              label="email"
-              placeholder="email 可选"
-              onChange={this.emailOnChange}
-              className={styles.field}
-            />
-            {
-              refId ?
-                <Chip label={`回复 #${refId}`} onDelete={onRefIdRemove} className={styles.refLabel} />
-                : null
-            }
+            <Grid container>
+              <Grid item xs>
+                <TextField
+                  label="昵称"
+                  placeholder="anonymous 可选"
+                  onChange={this.nameOnChange}
+                  className={styles.field}
+                  inputRef={el => this.nameInputEl = el}
+                />
+                <TextField
+                  label="email"
+                  placeholder="email 可选"
+                  onChange={this.emailOnChange}
+                  className={styles.field}
+                />
+              </Grid>
+
+              <Grid item>
+                <Grid container alignItems="center">
+                  <span className={styles.markdownHint}>支持Markdown</span>
+                  <img className={styles.markdownLogo} src={markdownPng} alt="markdown" />
+                </Grid>
+                {
+                  refId ?
+                    <Chip label={`回复 #${refId}`} onDelete={onRefIdRemove} className={styles.refLabel} />
+                    : null
+                }
+              </Grid>
+            </Grid>
             <div>
               <TextField
                 label="评论"
@@ -178,17 +189,7 @@ class CommentEditor extends React.Component {
                 {`${content.length}/${content_max_length}`}
                 </span>
               <Tooltip title="发送">
-                <Slide in={!replying} direction={replying ? 'left' : 'right'} timeout={replying ? 200 : 1000}>
-                  <div style={{ float: 'right' }}>
-                    <Fab
-                      color="primary"
-                      size="small"
-                      onClick={this.onReply}
-                    >
-                      <SendIcon />
-                    </Fab>
-                  </div>
-                </Slide>
+                <SendButton onSend={this.onReply} sending={replying} />
               </Tooltip>
               {
                 showPreview ? (
