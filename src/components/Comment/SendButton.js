@@ -5,7 +5,7 @@ import SendIcon from '@material-ui/icons/Send';
 import { animated, useSpring } from 'react-spring';
 
 
-function SendButton({ canSend, sending, onSend }) {
+function SendButton({ sending, onSend }) {
   const [state, toggle] = useState(true);
   const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 500 } });
 
@@ -21,12 +21,14 @@ function SendButton({ canSend, sending, onSend }) {
             })
             .interpolate(x => `scale(${x})`)
         }}
-        onClick={() => !canSend && toggle(!state)}
       >
         <Fab
           color="primary"
           size="small"
-          onClick={onSend}
+          onClick={async () => {
+            const canSend = await onSend();
+            !canSend && toggle(!state);
+          }}
         >
           <SendIcon />
         </Fab>
