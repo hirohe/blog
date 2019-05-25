@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 class SimplePagination extends React.PureComponent {
@@ -16,9 +17,9 @@ class SimplePagination extends React.PureComponent {
         >
           上一页
         </Button>
-        <span style={{margin: '0 16px'}}>
+        <Typography component="span" style={{ display: 'inline', margin: '0 16px' }}>
           {`${page}/${pages}`}
-        </span>
+        </Typography>
         <Button
           disabled={page && page >= pages}
           onClick={() => onChange(page + 1)}
