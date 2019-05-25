@@ -165,21 +165,25 @@ class ArticlePage extends React.Component {
               </div>
 
               <SubHeader>评论列表 {comments.total ? comments.total : 0} 条</SubHeader>
-              {loadingComments ? (
-                <div style={{ textAlign: 'center' }}>
-                  <CircularProgress size={30} />
-                </div>
-              ) : null}
-              <CommentList
-                ref={el => this.commentList = el}
-                comments={comments.records}
-                page={comments.page}
-                pageSize={comments.pageSize}
-                total={comments.total}
-                onChange={this.commentListOnChange}
-                onReply={this.onReply}
-                onGetRefComment={this.onGetRefComment}
-              />
+              <div className={styles.commentListContent}>
+                {loadingComments ? (
+                  <div className={styles.commentListMask} style={{ textAlign: 'center' }}>
+                    <div className={styles.commentListLoading}>
+                      <CircularProgress size={30} />
+                    </div>
+                  </div>
+                ) : null}
+                <CommentList
+                  ref={el => this.commentList = el}
+                  comments={comments.records}
+                  page={comments.page}
+                  pageSize={comments.pageSize}
+                  total={comments.total}
+                  onChange={this.commentListOnChange}
+                  onReply={this.onReply}
+                  onGetRefComment={this.onGetRefComment}
+                />
+              </div>
             </div>
           ) : null
         }
