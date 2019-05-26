@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-//hightlight css
-import 'highlightjs/styles/monokai-sublime.css';
-const hljs = require('highlightjs');
+import hljs from 'highlight.js/lib/highlight';
+import { registerLanguage } from './highlightConfig';
 
 class CodeBlock extends React.Component {
 
@@ -15,8 +13,14 @@ class CodeBlock extends React.Component {
     this.highlightCode();
   }
 
+  initHighlight = async language => {
+    return registerLanguage(language, hljs);
+  };
+
   highlightCode = () => {
-    hljs.highlightBlock(this.codeEl);
+    this.initHighlight(this.props.language).then(() => {
+      hljs.highlightBlock(this.codeEl);
+    });
   };
 
   render() {
