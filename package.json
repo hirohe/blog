@@ -13,7 +13,7 @@
     "history": "^4.9.0",
     "http-proxy-middleware": "^0.19.1",
     "identicon.js": "^2.3.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.12",
     "node-sass": "^4.11.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
@@ -23,14 +23,17 @@
     "react-scripts": "3.0.1",
     "react-spring": "^8.0.20",
     "react-twitter-widgets": "^1.7.1",
-    "source-map-explorer": "^1.8.0"
+    "source-map-explorer": "^1.8.0",
+    "snyk": "^1.221.1"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/**/*.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,5 +43,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "snyk": true
 }
