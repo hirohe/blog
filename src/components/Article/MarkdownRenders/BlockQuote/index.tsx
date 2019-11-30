@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode} from 'react';
+import React, {ReactElement} from 'react';
 import {Tweet} from 'react-twitter-widgets';
 
 const tweetIdRegex = /^tweet:(\d+)/;
@@ -35,6 +35,7 @@ const BlockQuote: React.FC<BlockQuoteProps> = (props) => {
                   const result = biliIdRegex.exec(text);
                   if (result) {
                     return <iframe
+                      title={'bilibili-player'}
                       key={i}
                       height="200px"
                       src={`//player.bilibili.com/player.html?aid=${result[1]}&cid=${result[2]}`}

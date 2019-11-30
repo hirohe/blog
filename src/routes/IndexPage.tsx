@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import qs from 'qs';
-import {ILayoutContext, LayoutContext} from './Layout';
+import LayoutContext, {ILayoutContext} from './Layout/LayoutContext';
 import { ArticleCardList } from '../components/Article';
-import LoadingMask from '../components/LoadingMask/index';
+import LoadingMask from '../components/LoadingMask';
 import { queryArticle } from '../services/Article';
 import ErrorContent from '../components/ErrorContent';
 import {RouteComponentProps} from "react-router";
@@ -32,7 +32,7 @@ const IndexPage: React.FC<RouteComponentProps<IndexPageProps>> = ({ history, loc
     layoutContext.updateTitle('首页');
     const queryData = handleLocation(location);
     onQueryArticle(queryData);
-  }, [layoutContext, location]);
+  }, []);
 
   // TODO need impl
   // componentDidUpdate(preProps) {

@@ -2,6 +2,7 @@ import request from './request';
 import {Article, articleFromResponseData, ArticleResponseData} from '../types/Article';
 import {Comment, commentFromResponseData, CommentResponseData} from '../types/Comment';
 import {Page, pageFromResponseData, PageResponseData} from "../types/common";
+import {OnReplyComment} from "../components/Comment/CommentEditor";
 
 const articleUrl = '/article';
 
@@ -15,11 +16,11 @@ export function fetchArticle(id: number): Promise<Article> {
     .then(response => articleFromResponseData(response.data));
 }
 
-export function fetchArticleComments(id: number, page: number, pageSize: number): Promise<Comment[]> {
-  return request.get<CommentResponseData[]>(`${articleUrl}/${id}/comments`, { params: { page, pageSize } })
-    .then(response => response.data.map(commentFromResponseData));
+export function fetchArticleComments(id: number, page: number, pageSize: number): Promise<Page<Comment>> {
+  return request.get<PageResponseData<CommentResponseData>>(`${articleUrl}/${id}/comments`, { params: { page, pageSize } })
+    .then(response => pageFromResponseData<Comment, CommentResponseData>(response.data, commentFromResponseData));
 }
 
-export function postComment(articleId: number, comment: Comment): Promise<boolean> {
+export function postComment(articleId: number, comment: OnReplyComment): Promise<boolean> {
   return request.post(`${articleUrl}/${articleId}/comment`, comment).then(() => true).catch(() => false);
 }

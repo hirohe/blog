@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import debounce from 'lodash/debounce';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -13,9 +12,9 @@ import { ArticleInfo } from './Article';
 import styles from './ArticleCard.module.sass';
 import {Article} from "../../types/Article";
 
-const _toggleLike = debounce(() => {
-  console.log('toggle like');
-}, 1000);
+// const _toggleLike = debounce(() => {
+//   console.log('toggle like');
+// }, 1000);
 
 export interface ArticleCardProps {
   article: Article;
@@ -23,12 +22,12 @@ export interface ArticleCardProps {
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, onOpen }) => {
-  const [liked, setLiked] = useState<boolean>(false);
+  // const [liked, setLiked] = useState<boolean>(false);
 
-  const toggleLike = () => {
-    setLiked(!liked);
-    _toggleLike();
-  };
+  // const toggleLike = () => {
+  //   setLiked(!liked);
+  //   _toggleLike();
+  // };
 
   const openArticle = () => {
     if (typeof onOpen === 'function') onOpen();

@@ -6,8 +6,8 @@ import copy from 'copy-to-clipboard';
 export interface CommonShareButtonProps {
   onShareSuccess: () => void;
   onShareReject: () => void;
-  title: string;
-  text: string;
+  title?: string;
+  text?: string;
 }
 
 const CommonShareButton: React.FC<CommonShareButtonProps> = ({ onShareSuccess, onShareReject, title = '', text = '' }) => {

@@ -4,7 +4,7 @@ import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import EmailIcon from '@material-ui/icons/Email';
-import { LayoutContext } from './Layout';
+import LayoutContext from './Layout/LayoutContext';
 import SubHeader from '../components/SubHeader';
 import TwitterIcon from '../components/icons/Twitter';
 import GitHubIcon from '../components/icons/GitHub';
@@ -17,7 +17,7 @@ const AboutPage: React.FC = () => {
   useEffect(() => {
     const { updateTitle } = layoutContext;
     updateTitle('关于我');
-  });
+  }, []);
 
   return (
     <div className={styles.root}>

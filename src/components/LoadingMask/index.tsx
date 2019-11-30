@@ -1,31 +1,41 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import styles from './index.module.sass';
 
-class LoadingMask extends React.Component {
+export interface LoadingMaskProps {
+  loading: boolean;
+}
 
-  constructor(props) {
+interface LoadingMaskState {
+  loading: boolean;
+}
+
+class LoadingMask extends React.Component<LoadingMaskProps, LoadingMaskState> {
+
+  loadingStartTimeOut: number | null = null;
+  loadingEndTimeOut: number | null = null;
+
+  constructor(props: LoadingMaskProps) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: LoadingMaskProps) {
     const { loading: newLoading } = nextProps;
     const { loading: oldLoading } = this.props;
     if (newLoading !== oldLoading) {
       if (newLoading) {
-        this.loadingStartTimeOut = setTimeout(() => {
+        this.loadingStartTimeOut = window.setTimeout(() => {
           this.setState({ loading: true });
         }, 500)
       } else {
         const { loading } = this.state;
         if (loading) { // already loading
           // TODO have better way ?
-          this.loadingEndTimeOut = setTimeout(() => {
+          this.loadingEndTimeOut = window.setTimeout(() => {
             this.setState({ loading: false });
           }, 200);
         } else { // not yet
@@ -59,9 +69,5 @@ class LoadingMask extends React.Component {
     )
   }
 }
-
-LoadingMask.propTypes = {
-  loading: PropTypes.bool.isRequired,
-};
 
 export default LoadingMask;

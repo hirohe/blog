@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import delay from 'lodash/delay';
@@ -7,20 +7,19 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
 import withTheme, {WithTheme} from '@material-ui/core/styles/withTheme';
 import withWidth, {WithWidth} from '@material-ui/core/withWidth';
 import Grid from '@material-ui/core/Grid';
 
-import { LayoutContext } from '../../routes/Layout';
 import SendButton from './SendButton';
 import IdenticonAvatar from '../IdenticonAvatar';
 import markdownPng from '../../assets/markdown.png';
 import { md5 } from '../../utils/common';
 
 import styles from './CommentEditor.module.sass';
+import {useSnackbar} from 'notistack';
 
 const content_max_length = 1000;
 
@@ -34,7 +33,7 @@ export interface CommentEditorState {
 }
 
 export type OnReplyComment = {
-  refId: number,
+  refId?: number | null,
   name: string,
   email: string,
   content: string,
@@ -52,21 +51,21 @@ function initialState(): CommentEditorState {
 }
 
 export interface CommentEditorProps extends WithTheme, WithWidth {
-  refId: number,
+  refId: number | null,
   onRefIdRemove: (id: number) => void,
-  onReply: (comment: OnReplyComment) => void,
+  onReplySend: (comment: OnReplyComment) => void,
 }
 
-const CommentEditor: React.FC<CommentEditorProps> = ({ refId, onRefIdRemove, onReply, theme, width }) => {
+const CommentEditor: React.FC<CommentEditorProps> = ({ refId, onRefIdRemove, onReplySend, theme, width }) => {
   const [state, setState] = useState<CommentEditorState>(initialState());
 
   const nameInputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (nameInputEl && nameInputEl.current) nameInputEl.current.focus();
+    if (nameInputEl && nameInputEl.current && refId) nameInputEl.current.focus();
   }, [refId]);
 
-  const layoutContext = useContext(LayoutContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const updateNameHash = debounce(() => {
     setState({ ...state, nameHash: md5(state.name) });
@@ -94,31 +93,30 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ refId, onRefIdRemove, onR
   };
 
   const onReplyClick = async () => {
-    const { showMessage } = layoutContext;
-    if (typeof onReply === 'function') {
+    if (typeof onReplySend === 'function') {
       const { name, email, content } = state;
 
       // check
       if (name.length <= 2) {
-        showMessage('请输入昵称');
+        enqueueSnackbar('请输入昵称');
         return false;
       }
       if (email.length > 0 && !/.+@.+\..+/.test(email)) {
-        showMessage('email不正确');
+        enqueueSnackbar('email不正确');
         return false;
       }
       if (content.length <= 0) {
-        showMessage('请输入评论');
+        enqueueSnackbar('请输入评论');
         return false;
       }
       if (content.length > content_max_length) {
-        showMessage('评论长度不能超过500');
+        enqueueSnackbar('评论长度不能超过500');
         return false;
       }
 
       setState({ ...state, replying: true });
       Promise.all([
-        onReply({ refId, name, email, content }),
+        onReplySend({ refId, name, email, content }),
         new Promise(resolve => delay(resolve, 300))
       ]).then(() => {
         setState(initialState());
@@ -203,9 +201,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ refId, onRefIdRemove, onR
             <span className={styles.contentLength}>
                 {`${content.length}/${content_max_length}`}
                 </span>
-            <Tooltip title="发送">
-              <SendButton onSend={onReplyClick} sending={replying} />
-            </Tooltip>
+            <SendButton onSend={onReplyClick} sending={replying} />
             {
               showPreview ? (
                 <Typography component="div" noWrap={false} className={styles.commentContent}>

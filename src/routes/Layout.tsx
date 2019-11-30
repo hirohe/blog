@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import createMuiTheme, {Theme} from '@material-ui/core/styles/createMuiTheme';
 import MenuIcon from '@material-ui/icons/Menu';
 import { SnackbarProvider } from 'notistack';
@@ -19,28 +19,10 @@ import BrightnessSunIcon from '@material-ui/icons/Brightness5';
 import ErrorContent from '../components/ErrorContent';
 import DrawerList from './Layout/DrawerList';
 import Footer from './Layout/Footer';
+import {ILayoutContext, LayoutContextProvider} from './Layout/LayoutContext';
 
 import styles from './Layout.module.sass';
-import {RouteComponentProps} from "react-router";
-
-export interface ILayoutContext {
-  title: string;
-  updateTitle: (title: string) => void;
-  openDrawer: boolean;
-  setOpenDrawer: (open: boolean) => void;
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
-}
-
-
-export const LayoutContext = React.createContext<ILayoutContext>({
-  title: 'APP',
-  updateTitle: (title: string) => {},
-  openDrawer: false,
-  setOpenDrawer: (open: boolean) => {},
-  darkMode: false,
-  setDarkMode: (darkMode: boolean) => {},
-});
+import {history} from '../router';
 
 const defaultTheme = createMuiTheme({
   palette: {
@@ -48,7 +30,7 @@ const defaultTheme = createMuiTheme({
   },
 });
 
-export interface LayoutProps extends RouteComponentProps {
+export interface LayoutProps {
 }
 
 export interface LayoutState {
@@ -106,7 +88,7 @@ class Layout extends React.Component<LayoutProps, LayoutState> {
   };
 
   goto = (path: string) => {
-    this.props.history.push(path);
+    history.push(path);
     this.setState({ openDrawer: false });
   };
 
@@ -121,12 +103,13 @@ class Layout extends React.Component<LayoutProps, LayoutState> {
       openDrawer,
       setOpenDrawer: this.toggleDrawer,
       setDarkMode: this.toggleDarkTheme,
+      showMessage: () => {}, // TODO
     };
 
     return (
-      <LayoutContext.Provider value={layoutContext}>
-        <MuiThemeProvider theme={theme}>
-          <SnackbarProvider maxSnack={1}>
+      <LayoutContextProvider value={layoutContext}>
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider maxSnack={2}>
             <AppBar position="fixed">
               <Toolbar>
                 <IconButton onClick={()=>{this.toggleDrawer(true)}} color="inherit">
@@ -191,8 +174,8 @@ class Layout extends React.Component<LayoutProps, LayoutState> {
 
             <Footer author="hirohe" />
           </SnackbarProvider>
-        </MuiThemeProvider>
-      </LayoutContext.Provider>
+        </ThemeProvider>
+      </LayoutContextProvider>
     )
   }
 }

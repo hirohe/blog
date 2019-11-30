@@ -65,7 +65,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comment, onReply, onGetRefCo
             <span className={styles.createdAt}>
                 {
                   differenceInMinutes(new Date(), createdAt) > 10 ?
-                    dateFormat(createdAt, 'YYYY-MM-DD') :
+                    dateFormat(createdAt, 'yyyy-MM-dd') :
                     distanceToNow(createdAt, { locale: zhLocale }) + ' 前'
                 }
               </span>

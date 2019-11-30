@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Layout from './routes/Layout';
 
-const history = createHashHistory();
+export const history = createHashHistory();
 
 const IndexPage = React.lazy(() => import(/* webpackChunkName: 'IndexPage' */'./routes/IndexPage'));
 const ArticlePage = React.lazy(() => import(/* webpackChunkName: 'ArticlePage' */'./routes/ArticlePage'));
@@ -18,12 +18,12 @@ function Loading() {
 const RouterConfig: React.FC = () => {
   return (
       <Router history={history}>
-        <Layout history={history}>
+        <Layout>
           <Suspense fallback={<Loading/>}>
             <Switch>
               <Route exact path="/articles" component={(props: RouteComponentProps) => <IndexPage {...props} />}/>
               <Route exact path="/article/:id" component={(props: RouteComponentProps) => <ArticlePage {...props} />}/>
-              <Route exact path="/about" component={(props: RouteComponentProps) => <AboutPage {...props} />}/>
+              <Route exact path="/about" component={AboutPage}/>
               <Redirect from="*" to="/articles"/>
             </Switch>
           </Suspense>

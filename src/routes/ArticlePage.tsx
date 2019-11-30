@@ -1,6 +1,5 @@
-import React, {ReactElement, ReactInstance} from 'react';
-import ReactDOM from 'react-dom';
-import { LayoutContext } from './Layout';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import LayoutContext, {ILayoutContext} from './Layout/LayoutContext';
 import ArticleComponent from '../components/Article';
 import { CommentList, CommentEditor } from '../components/Comment';
 import ErrorContent from '../components/ErrorContent';
@@ -14,211 +13,179 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {Article} from "../types/Article";
 import {Page} from "../types/common";
 import {Comment} from "../types/Comment";
+import {useSnackbar} from "notistack";
+import { RouteComponentProps } from 'react-router-dom';
+import {OnReplyComment} from "../components/Comment/CommentEditor";
 
-export interface ArticlePageProps {
+export interface ArticlePageProps extends RouteComponentProps<any> {
 }
 
-export interface ArticlePageState {
-  article: Article | null;
-  comments: Page<Comment>;
-  loadingComments: boolean;
-  refId: number | null;
-  hasError: boolean;
-  errorMessage: string | null;
-}
+const ArticlePage: React.FC<ArticlePageProps> = ({ match }) =>  {
+  const [article, setArticle] = useState<Article |  null>(null);
+  const [comments, setComments] = useState<Page<Comment>>({
+    records: [],
+    page: 1,
+    pageSize: 5,
+    total: 0,
+  });
+  const [loadingComments, setLoadingComments] = useState<boolean>(false);
+  const [refId, setRefId] = useState<number | null>(null);
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-class ArticlePage extends React.Component<ArticlePageProps, ArticlePageState> {
-  commentListEl: ReactInstance | null = null;
+  const commentListWrapper = useRef<HTMLDivElement>(null);
+  const commentEditorWrapper = useRef<HTMLDivElement>(null);
 
-  constructor(props: ArticlePageProps) {
-    super(props);
-    this.state = {
-      article: null,
-      comments: {
-        records: [],
-        page: 1,
-        pageSize: 5,
-        total: 0,
-      },
-      loadingComments: false,
+  const layoutContext = useContext<ILayoutContext>(LayoutContext);
 
-      refId: null,
+  const { enqueueSnackbar } = useSnackbar();
 
-      hasError: false,
-      errorMessage: null,
-    };
-  }
-
-  isCommentListInViewport(offset = 0) {
-    if (this.commentListEl) {
-      const theCommentListElement = ReactDOM.findDOMNode(this.commentListEl) as HTMLElement;
-      if (theCommentListElement) {
-        const top = theCommentListElement.getBoundingClientRect().top;
-        return (top + offset) >= 0 && (top - offset) <= window.innerHeight;
+  const handleArticleIdChange = useCallback(() => {
+    setHasError(false);
+    fetchArticle(match.params.id).then(article => {
+      if (article) {
+        article.createdAt = new Date(article.createdAt);
+        if (article.updatedAt) article.updatedAt = new Date(article.updatedAt);
+        setArticle(article);
       }
+    }).catch(errorMessage => {
+      setHasError(true);
+      setErrorMessage(errorMessage);
+    });
+  }, [match.params.id]);
+
+  useEffect(() => {
+    function onWindowScroll() {
+      const { id } = match.params;
+      if (isCommentListInViewport()) {
+        // cancel
+        window.removeEventListener('scroll', onWindowScroll);
+        getArticleComments(id);
+      }
+    }
+
+    layoutContext.updateTitle('文章');
+    window.addEventListener('scroll', onWindowScroll);
+
+    return () => window.removeEventListener('scroll', onWindowScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    handleArticleIdChange();
+  }, [match.params.id, handleArticleIdChange]);
+
+  function isCommentListInViewport(offset = 0) {
+    if (commentListWrapper.current) {
+      const top = commentListWrapper.current.getBoundingClientRect().top;
+      return (top + offset) >= 0 && (top - offset) <= window.innerHeight;
     }
 
     return false;
   }
 
-  getArticle = (id: number) => {
-    fetchArticle(id).then(article => {
-      if (article) {
-        article.createdAt = new Date(article.createdAt);
-        if (article.updatedAt) article.updatedAt = new Date(article.updatedAt);
-        this.setState({ article, hasError: false });
-      }
-    }).catch(errorMessage => {
-      this.setState({ hasError: true, errorMessage });
-    });
-  };
-
-  getArticleComments = (id, page = 1, pageSize = 5) => {
-    const { layoutContext } = this.props;
-    this.setState({ loadingComments: true });
-    fetchArticleComments(id, page, pageSize).then(commentPage => {
-      const { current, size, records, total } = commentPage;
-      this.setState({ comments: { page: current, pageSize: size, total, records } });
+  const getArticleComments = (id: string, page = 1, pageSize = 5) => {
+    setLoadingComments(true);
+    fetchArticleComments(parseInt(id, 10), page, pageSize).then(commentPage => {
+      setComments(commentPage);
     }).catch(() => {
-      layoutContext.showMessage('获取评论失败！');
+      enqueueSnackbar('获取评论失败！');
     }).finally(() => {
-      this.setState({ loadingComments: false });
+      setLoadingComments(false);
     })
   };
 
-  onWindowScroll = () => {
-    const { id } = this.props.match.params;
-    if (this.isCommentListInViewport()) {
-      window.removeEventListener('scroll', this.onWindowScroll);
-      this.getArticleComments(id);
+  const onCommentPageChange = (page: number, pageSize?: number) => {
+    getArticleComments(match.params.id, page, pageSize);
+  };
+
+  const onReplyArticle = () => {
+    setRefId(null);
+    if (commentEditorWrapper.current) {
+      commentEditorWrapper.current.scrollIntoView();
+      // offset
+      window.scrollBy(0, -50);
     }
   };
 
-  componentDidMount() {
-    const { updateTitle } = this.props.layoutContext;
-    updateTitle('文章');
-
-    const { id } = this.props.match.params;
-    this.getArticle(id);
-
-    window.addEventListener('scroll', this.onWindowScroll)
-  }
-
-  componentDidUpdate(preProps) {
-    const { id: newId } = this.props.match.params;
-    const { id: oldId } = preProps.match.params;
-    if (newId !== null && newId !== oldId) {
-      // is new id coming
-      this.getArticle(newId);
-      this.getArticleComments(newId);
-    }
-  }
-
-  commentListOnChange = (page, pageSize) => {
-    const { id } = this.props.match.params;
-    this.getArticleComments(id, page, pageSize);
+  const onReplyComment = (commentId: number) => {
+    if (commentId) setRefId(commentId);
   };
 
-  onReply = (id) => {
-    if (id) this.setState({ refId: id });
-    ReactDOM.findDOMNode(this.commentEditor).scrollIntoView();
-    // offset
-    window.scrollBy(0, -50);
-  };
-
-  onGetRefComment = (refId: number) => {
+  const onGetRefComment = (refId: number) => {
     return fetchComment(refId).then(refComment => {
       refComment.createdAt = new Date(refComment.createdAt);
       return refComment;
-    });
-  };
-
-  onRefIdRemove = () => {
-    this.setState({ refId: null });
-  };
-
-  onReplyArticle = (comment) => {
-    const { id } = this.props.match.params;
-    const { layoutContext } = this.props;
-    return postComment(id, comment).then(() => {
-      layoutContext.showMessage('发送成功');
-      this.getArticleComments(id);
     }).catch(() => {
-
+      enqueueSnackbar('获取评论失败', { variant: 'warning' });
+      return Promise.reject();
     });
   };
 
-  render() {
-    const {
-      article,
-      comments,
-      loadingComments,
+  const onRefIdRemove = () => {
+    setRefId(null);
+  };
 
-      hasError,
-      errorMessage,
+  const onReplySend = (comment: OnReplyComment) => {
+    const articleId = match.params.id;
+    return postComment(articleId, comment).then(() => {
+      enqueueSnackbar('发送成功');
+      getArticleComments(articleId);
+    }).catch(() => {
+      enqueueSnackbar('发送失败😱');
+    });
+  };
 
-      refId,
-    } = this.state;
+  return (
+    <React.Fragment>
+      {
+        hasError ? (
+          <ErrorContent content={errorMessage ||  ''} />
+        ) : article ? (
+          <div className={styles.content}>
+            <div className={styles.block}>
+              <ArticleComponent
+                article={article}
+                htmlMode="escape"
+                onReply={onReplyArticle}
+              />
+            </div>
 
-    return (
-      <React.Fragment>
-        {
-          hasError ? (
-            <ErrorContent content={errorMessage} />
-          ) : article ? (
-            <div className={styles.content}>
-              <div className={styles.block}>
-                <ArticleComponent
-                  article={article}
-                  htmlMode="escape"
-                  onReply={this.onReply}
-                />
-              </div>
-
-              <div className={styles.block}>
-                <SubHeader>评论</SubHeader>
-                <div className={styles.commentEditor}>
-                  <CommentEditor
-                    ref={el => this.commentEditor = el}
-                    refId={refId}
-                    onRefIdRemove={this.onRefIdRemove}
-                    onReply={this.onReplyArticle}
-                  />
-                </div>
-              </div>
-
-              <SubHeader>评论列表 {comments.total ? comments.total : 0} 条</SubHeader>
-              <div className={styles.commentListContent}>
-                {loadingComments ? (
-                  <div className={styles.commentListMask} style={{ textAlign: 'center' }}>
-                    <div className={styles.commentListLoading}>
-                      <CircularProgress size={30} />
-                    </div>
-                  </div>
-                ) : null}
-                <CommentList
-                  ref={(el: ReactElement) => this.commentListEl = el}
-                  comments={comments.records}
-                  page={comments.page}
-                  pageSize={comments.pageSize}
-                  total={comments.total}
-                  onChange={this.commentListOnChange}
-                  onReply={this.onReply}
-                  onGetRefComment={this.onGetRefComment}
+            <div className={styles.block}>
+              <SubHeader>评论</SubHeader>
+              <div className={styles.commentEditor} ref={commentEditorWrapper}>
+                <CommentEditor
+                  refId={refId}
+                  onRefIdRemove={onRefIdRemove}
+                  onReplySend={onReplySend}
                 />
               </div>
             </div>
-          ) : null
-        }
-      </React.Fragment>
-    )
-  }
-}
 
-export default (props) => {
-  return (
-    <LayoutContext.Consumer>
-      {context => <ArticlePage {...props} layoutContext={context} />}
-    </LayoutContext.Consumer>
+            <SubHeader>评论列表 {comments.total ? comments.total : 0} 条</SubHeader>
+            <div className={styles.commentListContent} ref={commentListWrapper}>
+              {loadingComments ? (
+                <div className={styles.commentListMask} style={{ textAlign: 'center' }}>
+                  <div className={styles.commentListLoading}>
+                    <CircularProgress size={30} />
+                  </div>
+                </div>
+              ) : null}
+              <CommentList
+                comments={comments.records}
+                page={comments.page}
+                pageSize={comments.pageSize}
+                total={comments.total}
+                onChange={onCommentPageChange}
+                onReply={onReplyComment}
+                onGetRefComment={onGetRefComment}
+              />
+            </div>
+          </div>
+        ) : null
+      }
+    </React.Fragment>
   )
 };
+
+export default ArticlePage;

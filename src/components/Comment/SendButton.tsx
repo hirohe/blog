@@ -39,6 +39,6 @@ const SendButton: React.FC<SendButtonProps> = ({ sending, onSend }) => {
       </animated.div>
     </Slide>
   )
-}
+};
 
 export default SendButton;

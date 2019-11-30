@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {ResponseData} from "../types/common";
 
 const request = axios.create({
   baseURL: '/api',
@@ -6,11 +7,20 @@ const request = axios.create({
 
 request.interceptors.response.use((response) => {
   if (response.data) {
-    if (response.data.success) {
-      return response.data.data;
+    const data = response.data as ResponseData<any>;
+    if (data.success !== undefined) {
+      if (data.success) {
+        response.data = data.data;
+        return response;
+      } else {
+        throw new Error(data.message);
+      }
+    } else {
+      throw new Error('parse response data failed');
     }
-    return Promise.reject(response.data.message)
   }
+
+  return response;
 }, (error) => {
   if (error instanceof Error) {
     // handle Error

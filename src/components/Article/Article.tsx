@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
@@ -28,7 +27,7 @@ const renderers = {
   blockquote: BlockQuote,
 };
 
-const DATE_FORMAT = 'YY-MM-DD HH:mm';
+const DATE_FORMAT = 'yy-MM-dd HH:mm';
 
 export interface ArticleInfoProps {
   article: Article;
@@ -50,7 +49,7 @@ export const ArticleInfo: React.FC<ArticleInfoProps> = ({ article }) => {
 export interface ArticleComponentProps {
   article: Article;
   htmlMode: 'skip' | 'escape';
-  onReply: () => void;
+  onReply: (id: number) => void;
 }
 
 const ArticleComponent: React.FC<ArticleComponentProps> = ({ article, htmlMode, onReply }) => {
@@ -78,7 +77,7 @@ const ArticleComponent: React.FC<ArticleComponentProps> = ({ article, htmlMode, 
                 }
               </div>
 
-              <Divider light/>
+              <Divider className={styles.labelsBottomDivider} light/>
 
               <Typography component="div">
                 <ReactMarkdown
@@ -91,8 +90,8 @@ const ArticleComponent: React.FC<ArticleComponentProps> = ({ article, htmlMode, 
             </CardContent>
             <Divider light/>
             <CardActions className={styles.cardActions}>
-              <CommonShareButton/>
-              <IconButton onClick={onReply}>
+              <CommonShareButton onShareSuccess={() =>  {}} onShareReject={() => {}}/>
+              <IconButton onClick={() => onReply(article.id)}>
                 <CommentIcon/>
               </IconButton>
             </CardActions>

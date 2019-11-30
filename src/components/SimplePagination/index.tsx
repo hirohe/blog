@@ -11,7 +11,7 @@ const SimplePagination: React.FC<PaginationProps> = ({ page, pageSize, total, on
     <div>
       <Button
         disabled={page <= 1}
-        onClick={() => onChange && onChange(page + 1)}
+        onClick={() => onChange && onChange(page - 1)}
       >
         上一页
       </Button>
