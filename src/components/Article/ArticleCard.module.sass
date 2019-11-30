@@ -1,0 +1,63 @@
+.card
+  margin-left: auto
+  margin-right: auto
+  margin-top: 25px
+  margin-bottom: 25px
+  max-width: 800px
+
+
+.cardMedia
+  height: 0
+  padding-top: 56.25%
+
+
+.cardAction
+  float: right
+  padding-right: 24px
+
+
+.preview
+  margin-bottom: 8px
+
+
+.title
+  cursor: pointer
+
+
+.title:hover
+  text-decoration: underline
+
+
+.label
+  margin-right: 8px
+  height: 24px
+
+
+.likes
+  display: inline-block
+  position: relative
+  top: -7px
+  margin-left: 8px
+
+
+.likeDefault
+  color: gray
+
+
+.liked
+  animation-name: liked
+  animation-duration: .2s
+  animation-timing-function: ease-out
+  color: red
+
+
+@keyframes liked
+  0%
+    transform: scale(1)
+    opacity: 1
+
+  100%
+    transform: scale(1.5)
+    opacity: .1
+
+
