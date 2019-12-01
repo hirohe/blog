@@ -69,10 +69,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comment, onReply, onGetRefCo
                     distanceToNow(createdAt, { locale: zhLocale }) + ' 前'
                 }
               </span>
-            <span className={styles.id}>
-                #{id}
-              </span>
-
+            <span className={styles.id}>#{id}</span>
             {
               !Boolean(noReplyBtn) ? (
                 <Button
