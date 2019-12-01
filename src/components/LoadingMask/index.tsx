@@ -1,73 +1,64 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import styles from './index.module.sass';
 
 export interface LoadingMaskProps {
   loading: boolean;
+  delay?: number;
 }
 
-interface LoadingMaskState {
-  loading: boolean;
-}
+const LoadingMask: React.FC<LoadingMaskProps> = ({ loading: loadingFromProps, delay = 300, children }) => {
+  const [loading, setLoading] = useState(loadingFromProps);
+  const [loadingStartTimer, setLoadingStartTimer] = useState<number | null>(null);
+  const [loadingEndTimer, setLoadingEndTimer] = useState<number | null>(null);
 
-class LoadingMask extends React.Component<LoadingMaskProps, LoadingMaskState> {
-
-  loadingStartTimeOut: number | null = null;
-  loadingEndTimeOut: number | null = null;
-
-  constructor(props: LoadingMaskProps) {
-    super(props);
-    this.state = {
-      loading: false,
+  useEffect(() => {
+    return () => {
+      if (loadingStartTimer !== null) clearTimeout(loadingStartTimer);
+      if (loadingEndTimer !== null) clearTimeout(loadingEndTimer);
     }
-  }
+  }, []);
 
-  componentWillReceiveProps(nextProps: LoadingMaskProps) {
-    const { loading: newLoading } = nextProps;
-    const { loading: oldLoading } = this.props;
-    if (newLoading !== oldLoading) {
-      if (newLoading) {
-        this.loadingStartTimeOut = window.setTimeout(() => {
-          this.setState({ loading: true });
-        }, 500)
-      } else {
-        const { loading } = this.state;
-        if (loading) { // already loading
-          // TODO have better way ?
-          this.loadingEndTimeOut = window.setTimeout(() => {
-            this.setState({ loading: false });
-          }, 200);
-        } else { // not yet
-          this.loadingStartTimeOut && clearTimeout(this.loadingStartTimeOut);
+  useEffect(() => {
+    if (loadingFromProps) {
+      if (loadingStartTimer === null) {
+        setLoadingStartTimer(window.setTimeout(() => {
+          setLoading(true);
+          setLoadingStartTimer(null);
+        }, delay));
+      }
+    } else {
+      if (loading) { // already loading
+        if (loadingEndTimer === null) {
+          setLoadingEndTimer(window.setTimeout(() => {
+            setLoading(false);
+            setLoadingEndTimer(null);
+          }, 500));
+        }
+      } else { // not yet loading, cancel the timer
+        if (loadingStartTimer !== null) {
+          clearTimeout(loadingStartTimer);
+          setLoadingStartTimer(null);
         }
       }
     }
-  }
+  }, [loadingFromProps]);
 
-  componentWillUnmount() {
-    this.loadingStartTimeOut && clearTimeout(this.loadingStartTimeOut);
-    this.loadingEndTimeOut && clearTimeout(this.loadingEndTimeOut);
-  }
-
-  render() {
-    const { children, loading } = this.props;
-
-    return (
-      <div className={styles.root}>
-        {
-          loading && (
-            <div className={styles.mask}>
-              <CircularProgress className={styles.spinner} />
-            </div>
-          )
-        }
-        <div className={styles.container}>
-          {children}
-        </div>
+  return (
+    <div className={styles.root}>
+      {
+        loading && (
+          <div className={styles.mask}>
+            <CircularProgress className={styles.spinner} />
+          </div>
+        )
+      }
+      <div className={styles.container}>
+        {children}
       </div>
-    )
-  }
-}
+    </div>
+  )
+};
 
 export default LoadingMask;
