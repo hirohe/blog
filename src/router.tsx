@@ -1,11 +1,11 @@
 import React, {Suspense} from 'react';
-import {createHashHistory} from 'history';
+import {createBrowserHistory} from 'history';
 import {Redirect, Route, RouteComponentProps, Router, Switch} from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Layout from './routes/Layout';
 
-export const history = createHashHistory();
+export const history = createBrowserHistory();
 
 const IndexPage = React.lazy(() => import(/* webpackChunkName: 'IndexPage' */'./routes/IndexPage'));
 const ArticlePage = React.lazy(() => import(/* webpackChunkName: 'ArticlePage' */'./routes/ArticlePage'));
