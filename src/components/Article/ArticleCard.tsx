@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 
 import { ArticleInfo } from './Article';
 
@@ -41,15 +42,17 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onOpen }) => {
       />
       <CardContent>
         <ArticleInfo article={article} />
-        <Typography
-          className={styles.title}
-          onClick={openArticle}
-          gutterBottom
-          variant="h5"
-          component="h2"
-        >
-          {article.title}
-        </Typography>
+        <Link href={`/article/${article.id}`}>
+          <Typography
+            className={styles.title}
+            onClick={openArticle}
+            gutterBottom
+            variant="h5"
+            component="h2"
+          >
+            {article.title}
+          </Typography>
+        </Link>
         <Typography component="p" className={styles.preview}>
           {article.preview}
         </Typography>
