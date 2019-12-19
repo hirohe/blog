@@ -63,7 +63,7 @@ const ArticleComponent: React.FC<ArticleComponentProps> = ({ article, htmlMode, 
               image={article.coverUrl}
             />
             <CardContent className={styles.content}>
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography align="center" gutterBottom variant="h4" component="h4">
                 {article.title}
               </Typography>
 
