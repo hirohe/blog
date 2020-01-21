@@ -26,7 +26,7 @@
     "http-proxy-middleware": "^0.20.0",
     "identicon.js": "^2.3.3",
     "lodash": "^4.17.15",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "notistack": "^0.9.7",
     "prop-types": "^15.7.2",
     "qs": "^6.9.1",
