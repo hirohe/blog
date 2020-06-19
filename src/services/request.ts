@@ -1,33 +1,51 @@
-import axios from 'axios';
-import {ResponseData} from "../types/common";
+import axios, {AxiosError, AxiosResponse} from 'axios';
 
 const request = axios.create({
   baseURL: '/api',
+  timeout: 15000,
 });
 
-request.interceptors.response.use((response) => {
-  if (response.data) {
-    const data = response.data as ResponseData<any>;
-    if (data.success !== undefined) {
-      if (data.success) {
-        response.data = data.data;
-        return response;
-      } else {
-        throw new Error(data.message);
-      }
-    } else {
-      throw new Error('parse response data failed');
+/**
+ * Problem Details Json Response
+ * RFC-7807 https://tools.ietf.org/html/rfc7807
+ */
+export interface ServiceProblem {
+  title: string;
+  status: number;
+  detail?: string;
+}
+
+/**
+ * request error，include problem and response
+ * for request error handling e.g. if (error instanceof ServiceError)
+ */
+export class ServiceError extends Error {
+  problem: ServiceProblem;
+  response: AxiosResponse;
+
+  /**
+   * ServiceError
+   * @param problem: convert from AxiosResponse
+   * @param response: AxiosResponse
+   */
+  constructor(problem: ServiceProblem, response: AxiosResponse) {
+    super(problem.title);
+    this.problem = problem;
+    this.response = response;
+  }
+}
+
+request.interceptors.response.use(response => response, (error) => {
+  if (error && error.isAxiosError) {
+    const response = (error as AxiosError).response;
+
+    if (response && response.data !== undefined && response.data !== null) {
+      const problem = response.data as ServiceProblem;
+      throw new ServiceError(problem, response);
     }
   }
 
-  return response;
-}, (error) => {
-  if (error instanceof Error) {
-    // handle Error
-    const errorMessage = error.message;
-    return Promise.reject(errorMessage);
-  }
-  return Promise.reject(error);
+  throw error;
 });
 
 export default request;
