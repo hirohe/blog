@@ -17,6 +17,7 @@ import IdenticonAvatar from '../IdenticonAvatar';
 
 import styles from './Comment.module.sass';
 import {Comment} from "../../types/Comment";
+import {md5} from "../../utils/common";
 
 export interface CommentProps extends WithWidth {
   comment: Comment;
@@ -25,6 +26,8 @@ export interface CommentProps extends WithWidth {
   noReplyBtn?: boolean,
   noRefIdLabel?: boolean,
 }
+
+const anonymousNameHash = md5('anonymous');
 
 const CommentComponent: React.FC<CommentProps> = ({ comment, onReply, onGetRefComment, noReplyBtn = false, noRefIdLabel = false, width = 'xs' }) => {
   const {
@@ -57,7 +60,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comment, onReply, onGetRefCo
     <Paper className={styles.comment}>
       <Grid container>
         <Grid item className={styles.avatar} sm={1} xs={2}>
-          <IdenticonAvatar name={name} hash={nameHash} />
+          <IdenticonAvatar name={name} hash={nameHash || anonymousNameHash} />
         </Grid>
         <Grid item sm={11} xs={10}>
           <div className={styles.info}>
