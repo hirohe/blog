@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosResponse} from 'axios';
 
 const request = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.REACT_APP_API_PATH,
   timeout: 15000,
 });
 
