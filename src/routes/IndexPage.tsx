@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import qs from 'qs';
 import LayoutContext, {ILayoutContext} from './Layout/LayoutContext';
 import { ArticleCardList } from '../components/Article';
 import LoadingMask from '../components/LoadingMask';
 import { queryArticle } from '../services/Article';
 import ErrorContent from '../components/ErrorContent';
-import {RouteComponentProps} from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import {Page} from "../types/common";
 import {Article} from "../types/Article";
 import {Location} from "history";
@@ -30,27 +30,18 @@ const IndexPage: React.FC<RouteComponentProps<IndexPageProps>> = ({ history, loc
 
   useEffect(() => {
     layoutContext.updateTitle('首页');
-    const queryData = handleLocation(location);
-    onQueryArticle(queryData);
   }, []);
 
-  // TODO need impl
-  // componentDidUpdate(preProps) {
-  //   const { page: oldPage, pageSize: oldPageSize } = this.handleLocation(preProps.location);
-  //   const { page: newPage, pageSize: newPageSize } = this.handleLocation(this.props.location);
-  //   if (oldPage !== newPage || oldPageSize !== newPageSize) {
-  //     // get new page
-  //     this.queryArticle(newPage, newPageSize);
-  //     // back to top
-  //     window.scrollTo(0, 0);
-  //   }
-  // }
+  useEffect(() => {
+    const queryData = handleLocation(location);
+    onQueryArticle(queryData);
+  }, [location.search, useCallback]);
 
   const openArticle = (id: number) => {
     history.push({ pathname: `article/${id}` });
   };
 
-  const handleLocation = (location: Location): IndexPageLocationQueryData => {
+  const handleLocation = useCallback((location: Location): IndexPageLocationQueryData => {
     // get page, pageSize from search
     const { search } = location;
     // TODO labels, category
@@ -59,7 +50,7 @@ const IndexPage: React.FC<RouteComponentProps<IndexPageProps>> = ({ history, loc
     page = parseInt(page) || 1;
     pageSize = parseInt(pageSize) || 10;
     return { page, pageSize, labels };
-  };
+  }, [location]);
 
   const onQueryArticle = (queryData: IndexPageLocationQueryData) => {
     const { page, pageSize, labels } = queryData;
