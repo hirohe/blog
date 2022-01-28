@@ -1,35 +1,49 @@
-import React, {Suspense} from 'react';
-import {createBrowserHistory} from 'history';
-import {Redirect, Route, RouteComponentProps, Router, Switch} from 'react-router-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React, { Suspense } from 'react'
+import { createBrowserHistory } from 'history'
+import {
+  Route,
+  Routes,
+  BrowserRouter,
+} from 'react-router-dom'
+import loadable from '@loadable/component'
+import CircularProgress from '@mui/material/CircularProgress'
 
-import Layout from './routes/Layout';
+import Layout from './routes/Layout'
 
-export const history = createBrowserHistory();
+export const history = createBrowserHistory()
 
-const IndexPage = React.lazy(() => import(/* webpackChunkName: 'IndexPage' */'./routes/IndexPage'));
-const ArticlePage = React.lazy(() => import(/* webpackChunkName: 'ArticlePage' */'./routes/ArticlePage'));
-const AboutPage = React.lazy(() => import(/* webpackChunkName: 'AboutPage' */'./routes/AboutPage'));
+const IndexPage = loadable(() => import(/* webpackChunkName: 'IndexPage' */ './routes/IndexPage'))
+const ArticlePage = loadable(() => import(/* webpackChunkName: 'ArticlePage' */ './routes/ArticlePage'))
+const AboutPage = loadable(() => import(/* webpackChunkName: 'AboutPage' */ './routes/AboutPage'))
 
 function Loading() {
-  return <div style={{ textAlign: 'center', marginTop: '20%' }}><CircularProgress /></div>
+  return (
+    <div style={{ textAlign: 'center', marginTop: '20%' }}>
+      <CircularProgress />
+    </div>
+  )
 }
 
 const RouterConfig: React.FC = () => {
   return (
-      <Router history={history}>
-        <Layout>
-          <Suspense fallback={<Loading/>}>
-            <Switch>
-              <Route exact path="/articles" component={(props: RouteComponentProps) => <IndexPage {...props} />}/>
-              <Route exact path="/article/:id" component={(props: RouteComponentProps) => <ArticlePage {...props} />}/>
-              <Route exact path="/about" component={AboutPage}/>
-              <Redirect from="*" to="/articles"/>
-            </Switch>
-          </Suspense>
-        </Layout>
-      </Router>
+    <BrowserRouter>
+      <Layout>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route
+              path="/articles"
+              element={<IndexPage />}
+            />
+            <Route
+              path="/article/:id"
+              element={<ArticlePage />}
+            />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </Suspense>
+      </Layout>
+    </BrowserRouter>
   )
-};
+}
 
-export default RouterConfig;
+export default RouterConfig

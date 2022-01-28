@@ -1,23 +1,22 @@
-import React, {useContext, useEffect} from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import EmailIcon from '@material-ui/icons/Email';
-import LayoutContext from './Layout/LayoutContext';
-import SubHeader from '../components/SubHeader';
-import TwitterIcon from '../components/icons/Twitter';
-import GitHubIcon from '../components/icons/GitHub';
+import React, { useContext, useEffect } from 'react'
+import Avatar from '@mui/material/Avatar'
+import Chip from '@mui/material/Chip'
+import Grid from '@mui/material/Grid'
+import EmailIcon from '@mui/icons-material/Email'
+import LayoutContext from './Layout/LayoutContext'
+import SubHeader from '../components/SubHeader'
+import TwitterIcon from '../components/icons/Twitter'
+import GitHubIcon from '../components/icons/GitHub'
 
-import styles from './AboutPage.module.sass';
+import styles from './AboutPage.module.sass'
 
 const AboutPage: React.FC = () => {
-  const layoutContext = useContext(LayoutContext);
+  const layoutContext = useContext(LayoutContext)
 
   useEffect(() => {
-    const { updateTitle } = layoutContext;
-    updateTitle('关于我');
-  }, []);
+    const { updateTitle } = layoutContext
+    updateTitle('关于我')
+  }, [])
 
   return (
     <div className={styles.root}>
@@ -35,30 +34,23 @@ const AboutPage: React.FC = () => {
       <div className={styles.content}>
         <SubHeader>与我联系</SubHeader>
 
-        <Typography>
-
-        </Typography>
-        <Grid container justify="center" spacing={4}>
+        <Grid container>
           <Grid item>
             <a className={styles.chipLink} href="https://twitter.com/Heecn">
               <Chip
                 icon={<TwitterIcon />}
                 label="@Heecn"
                 color="primary"
-                onClick={()=>{}}
+                onClick={() => {}}
                 classes={{
-                  colorPrimary: styles.twitterPrimary
+                  colorPrimary: styles.twitterPrimary,
                 }}
               />
             </a>
           </Grid>
           <Grid item>
             <a className={styles.chipLink} href="https://github.com/hirohe">
-              <Chip
-                icon={<GitHubIcon />}
-                label="hirohe"
-                onClick={()=>{}}
-              />
+              <Chip icon={<GitHubIcon />} label="hirohe" onClick={() => {}} />
             </a>
           </Grid>
           <Grid item>
@@ -72,6 +64,6 @@ const AboutPage: React.FC = () => {
       </div>
     </div>
   )
-};
+}
 
-export default AboutPage;
+export default AboutPage

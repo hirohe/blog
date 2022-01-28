@@ -1,39 +1,49 @@
-import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import BookIcon from '@material-ui/icons/Book';
-import InfoIcon from '@material-ui/icons/Info';
+import React from 'react'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import BookIcon from '@mui/icons-material/Book'
+import InfoIcon from '@mui/icons-material/Info'
 
 export interface DrawerListProps {
-  goto: (routePath: string) => void;
+  goto: (routePath: string) => void
 }
 
 const style = {
   width: 260,
-};
+}
 
 const DrawerList: React.FC<DrawerListProps> = (props) => {
   return (
     <div style={style}>
       <List component="nav">
-        <ListItem button onClick={() => {props.goto('/article')}}>
+        <ListItem
+          button
+          onClick={() => {
+            props.goto('/article')
+          }}
+        >
           <ListItemIcon>
-            <BookIcon/>
+            <BookIcon />
           </ListItemIcon>
-          <ListItemText primary="文章"/>
+          <ListItemText primary="文章" />
         </ListItem>
 
-        <ListItem button onClick={() => {props.goto('/about')}}>
+        <ListItem
+          button
+          onClick={() => {
+            props.goto('/about')
+          }}
+        >
           <ListItemIcon>
-            <InfoIcon/>
+            <InfoIcon />
           </ListItemIcon>
-          <ListItemText primary="关于"/>
+          <ListItemText primary="关于" />
         </ListItem>
       </List>
     </div>
   )
-};
+}
 
-export default DrawerList;
+export default DrawerList

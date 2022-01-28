@@ -1,11 +1,11 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import React from 'react'
+import Typography from '@mui/material/Typography'
 
 const style = {
   paddingLeft: '1rem',
   marginTop: '0.35rem',
   borderLeft: 'solid 5px #ccc',
-};
+}
 
 const SubHeader: React.FC = ({ children }) => {
   return (
@@ -13,6 +13,6 @@ const SubHeader: React.FC = ({ children }) => {
       {children}
     </Typography>
   )
-};
+}
 
-export default SubHeader;
+export default SubHeader

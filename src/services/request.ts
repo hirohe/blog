@@ -1,18 +1,19 @@
-import axios, {AxiosError, AxiosResponse} from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 const request = axios.create({
-  baseURL: process.env.REACT_APP_API_PATH,
-  timeout: 15000,
-});
+  // baseURL: import.meta.env.REACT_APP_API_PATH as string,
+  baseURL: '/api',
+  // timeout: 15000,
+})
 
 /**
  * Problem Details Json Response
  * RFC-7807 https://tools.ietf.org/html/rfc7807
  */
 export interface ServiceProblem {
-  title: string;
-  status: number;
-  detail?: string;
+  title: string
+  status: number
+  detail?: string
 }
 
 /**
@@ -20,8 +21,8 @@ export interface ServiceProblem {
  * for request error handling e.g. if (error instanceof ServiceError)
  */
 export class ServiceError extends Error {
-  problem: ServiceProblem;
-  response: AxiosResponse;
+  problem: ServiceProblem
+  response: AxiosResponse
 
   /**
    * ServiceError
@@ -29,23 +30,26 @@ export class ServiceError extends Error {
    * @param response: AxiosResponse
    */
   constructor(problem: ServiceProblem, response: AxiosResponse) {
-    super(problem.title);
-    this.problem = problem;
-    this.response = response;
+    super(problem.title)
+    this.problem = problem
+    this.response = response
   }
 }
 
-request.interceptors.response.use(response => response, (error) => {
-  if (error && error.isAxiosError) {
-    const response = (error as AxiosError).response;
+request.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error && error.isAxiosError) {
+      const response = (error as AxiosError).response
 
-    if (response && response.data !== undefined && response.data !== null) {
-      const problem = response.data as ServiceProblem;
-      throw new ServiceError(problem, response);
+      if (response && response.data !== undefined && response.data !== null) {
+        const problem = response.data as ServiceProblem
+        throw new ServiceError(problem, response)
+      }
     }
+
+    throw error
   }
+)
 
-  throw error;
-});
-
-export default request;
+export default request

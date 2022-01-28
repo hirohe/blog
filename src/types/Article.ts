@@ -1,31 +1,31 @@
-import {Category} from './Category';
+import { Category } from './Category'
 
 export interface Article {
-  id: number;
-  title: string;
-  subTitle: string;
-  category: Category;
-  content: string | null;
-  coverUrl: string;
-  labels: string;
-  likes: number;
-  preview: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: number
+  title: string
+  subTitle: string
+  category: Category
+  content: string | null
+  coverUrl: string
+  labels: string
+  likes: number
+  preview: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface ArticleResponseData {
-  id: number;
-  title: string;
-  subTitle: string;
-  category: string;
-  content: string | null;
-  coverUrl: string;
-  labels: string;
-  likes: number;
-  preview: string;
-  createdAt: string;
-  updatedAt: string;
+  id: number
+  title: string
+  subTitle: string
+  category: string
+  content: string | null
+  coverUrl: string
+  labels: string
+  likes: number
+  preview: string
+  createdAt: string
+  updatedAt: string
 }
 
 export function articleFromResponseData(data: ArticleResponseData): Article {

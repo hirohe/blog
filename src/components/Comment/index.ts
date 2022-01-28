@@ -1,11 +1,7 @@
-import Comment from './Comment';
-import CommentList from './CommentList';
-import CommentEditor from './CommentEditor';
+import Comment from './Comment'
+import CommentList from './CommentList'
+import CommentEditor from './CommentEditor'
 
-export default Comment;
+export default Comment
 
-export {
-  Comment,
-  CommentList,
-  CommentEditor,
-}
+export { Comment, CommentList, CommentEditor }

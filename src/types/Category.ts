@@ -1,5 +1,5 @@
 export enum Category {
-  LIFE  = 'LIFE',
-  TECH  = 'TECH',
+  LIFE = 'LIFE',
+  TECH = 'TECH',
   OTHER = 'OTHER',
 }

@@ -1,25 +1,30 @@
-import React from 'react';
-import ShareIcon from "@material-ui/icons/Share";
-import IconButton from "@material-ui/core/IconButton";
-import copy from 'copy-to-clipboard';
+import React from 'react'
+import ShareIcon from '@mui/icons-material/Share'
+import IconButton from '@mui/material/IconButton'
+import copy from 'copy-to-clipboard'
 
 export interface CommonShareButtonProps {
-  onShareSuccess: () => void;
-  onShareReject: () => void;
-  title?: string;
-  text?: string;
+  onShareSuccess: () => void
+  onShareReject: () => void
+  title?: string
+  text?: string
 }
 
-const CommonShareButton: React.FC<CommonShareButtonProps> = ({ onShareSuccess, onShareReject, title = '', text = '' }) => {
+const CommonShareButton: React.FC<CommonShareButtonProps> = ({
+  onShareSuccess,
+  onShareReject,
+  title = '',
+  text = '',
+}) => {
   const onShare = () => {
     if (typeof onShareSuccess !== 'function') {
-      onShareSuccess = () => {};
+      onShareSuccess = () => {}
     }
     if (typeof onShareReject !== 'function') {
-      onShareReject = () => {};
+      onShareReject = () => {}
     }
 
-    const url = window.location.href;
+    const url = window.location.href
 
     // @ts-ignore
     if (window.navigator.share) {
@@ -28,30 +33,33 @@ const CommonShareButton: React.FC<CommonShareButtonProps> = ({ onShareSuccess, o
         title,
         text,
         url,
-      };
+      }
       // @ts-ignore
-      window.navigator.share(shareData).then(() => {
-        onShareSuccess();
-      }).catch(() => {
-        onShareReject();
-      });
+      window.navigator
+        .share(shareData)
+        .then(() => {
+          onShareSuccess()
+        })
+        .catch(() => {
+          onShareReject()
+        })
     } else {
       // fallback to copy-paste
-      const success = copy(url);
+      const success = copy(url)
       if (success) {
-        alert('已经复制了链接~');
-        onShareSuccess();
+        alert('已经复制了链接~')
+        onShareSuccess()
       } else {
-        onShareReject();
+        onShareReject()
       }
     }
-  };
+  }
 
   return (
     <IconButton onClick={onShare}>
       <ShareIcon />
     </IconButton>
-  );
-};
+  )
+}
 
-export default CommonShareButton;
+export default CommonShareButton

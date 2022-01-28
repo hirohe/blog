@@ -1,25 +1,25 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Chip from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import React from 'react'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardMedia from '@mui/material/CardMedia'
+import CardContent from '@mui/material/CardContent'
+import CardActions from '@mui/material/CardActions'
+import Chip from '@mui/material/Chip'
+import Typography from '@mui/material/Typography'
+import Link from '@mui/material/Link'
 
-import { ArticleInfo } from './Article';
+import { ArticleInfo } from './Article'
 
-import styles from './ArticleCard.module.sass';
-import {Article} from "../../types/Article";
+import styles from './ArticleCard.module.sass'
+import { Article } from '../../types/Article'
 
 // const _toggleLike = debounce(() => {
 //   console.log('toggle like');
 // }, 1000);
 
 export interface ArticleCardProps {
-  article: Article;
-  onOpen: () => void;
+  article: Article
+  onOpen: () => void
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, onOpen }) => {
@@ -31,15 +31,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onOpen }) => {
   // };
 
   const openArticle = () => {
-    if (typeof onOpen === 'function') onOpen();
-  };
+    if (typeof onOpen === 'function') onOpen()
+  }
 
   return (
     <Card className={styles.card}>
-      <CardMedia
-        className={styles.cardMedia}
-        image={article.coverUrl}
-      />
+      <CardMedia className={styles.cardMedia} image={article.coverUrl} />
       <CardContent>
         <ArticleInfo article={article} />
         <Link href={`/article/${article.id}`}>
@@ -56,11 +53,17 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onOpen }) => {
         <Typography component="p" className={styles.preview}>
           {article.preview}
         </Typography>
-        {
-          article.labels ? article.labels.split(',').map((label, index) =>
-            <Chip key={index} label={'#'+label} className={styles.label} />
-          ) : null
-        }
+        {article.labels
+          ? article.labels
+              .split(',')
+              .map((label, index) => (
+                <Chip
+                  key={index}
+                  label={'#' + label}
+                  className={styles.label}
+                />
+              ))
+          : null}
       </CardContent>
       <CardActions className={styles.cardAction}>
         {/*<div>
@@ -70,10 +73,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onOpen }) => {
             />
             <div className={styles.likes}>{likes}</div>
           </div>*/}
-        <Button color="primary" onClick={openArticle}>阅读全文</Button>
+        <Button color="primary" onClick={openArticle}>
+          阅读全文
+        </Button>
       </CardActions>
     </Card>
   )
-};
+}
 
-export default ArticleCard;
+export default ArticleCard

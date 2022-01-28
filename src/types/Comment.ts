@@ -1,23 +1,23 @@
 export interface Comment {
-  id: number;
-  articleId: number;
-  refId: number;
-  name: string;
-  nameHash: string;
-  email: string | null;
-  content: string;
-  createdAt: Date;
+  id: number
+  articleId: number
+  refId: number
+  name: string
+  nameHash: string
+  email: string | null
+  content: string
+  createdAt: Date
 }
 
 export interface CommentResponseData {
-  id: number;
-  articleId: number;
-  refId: number;
-  name: string;
-  nameHash: string;
-  email: string | null;
-  content: string;
-  createdAt: string;
+  id: number
+  articleId: number
+  refId: number
+  name: string
+  nameHash: string
+  email: string | null
+  content: string
+  createdAt: string
 }
 
 export function commentFromResponseData(data: CommentResponseData): Comment {

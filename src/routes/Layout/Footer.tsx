@@ -1,10 +1,10 @@
-import React from 'react';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import React from 'react'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 
-import styles from './Footer.module.sass';
+import styles from './Footer.module.sass'
 
 export interface FooterProps {
-  author: string;
+  author: string
 }
 
 const Footer: React.FC<FooterProps> = ({ author }) => {
@@ -12,10 +12,11 @@ const Footer: React.FC<FooterProps> = ({ author }) => {
     <div className={styles.root}>
       {`© - ${new Date().getFullYear()} ${author}  (^_^)/`}
       <span className={styles.hint}>
-        build with <FavoriteIcon fontSize="inherit" /> <a href="https://material-ui.com">material-ui</a>
+        build with <FavoriteIcon fontSize="inherit" />{' '}
+        <a href="https://material-ui.com">material-ui</a>
       </span>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

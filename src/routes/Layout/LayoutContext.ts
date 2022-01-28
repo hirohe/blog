@@ -1,18 +1,18 @@
-import {createContext} from 'react';
+import { createContext } from 'react'
 
 export interface ILayoutContext {
-  title: string;
-  updateTitle: (title: string) => void;
-  openDrawer: boolean;
-  setOpenDrawer: (open: boolean) => void;
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
+  title: string
+  updateTitle: (title: string) => void
+  openDrawer: boolean
+  setOpenDrawer: (open: boolean) => void
+  darkMode: boolean
+  setDarkMode: (darkMode: boolean) => void
 
-  showMessage: (message: string) => void;
+  showMessage: (message: string) => void
 }
 
 const LayoutContext = createContext<ILayoutContext>({
-  title: process.env.REACT_APP_TITLE || 'APP',
+  title: import.meta.env.REACT_APP_TITLE as string || 'APP',
   updateTitle: (title: string) => {},
   openDrawer: false,
   setOpenDrawer: (open: boolean) => {},
@@ -20,8 +20,8 @@ const LayoutContext = createContext<ILayoutContext>({
   setDarkMode: (darkMode: boolean) => {},
 
   showMessage: () => {},
-});
+})
 
-export const LayoutContextProvider = LayoutContext.Provider;
-export const LayoutContextConsumer = LayoutContext.Consumer;
-export default LayoutContext;
+export const LayoutContextProvider = LayoutContext.Provider
+export const LayoutContextConsumer = LayoutContext.Consumer
+export default LayoutContext
