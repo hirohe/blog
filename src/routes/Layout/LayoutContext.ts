@@ -12,7 +12,7 @@ export interface ILayoutContext {
 }
 
 const LayoutContext = createContext<ILayoutContext>({
-  title: import.meta.env.REACT_APP_TITLE as string || 'APP',
+  title: (import.meta.env.VITE_TITLE as string) || 'APP',
   updateTitle: (title: string) => {},
   openDrawer: false,
   setOpenDrawer: (open: boolean) => {},
