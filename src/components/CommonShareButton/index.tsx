@@ -26,7 +26,6 @@ const CommonShareButton: React.FC<CommonShareButtonProps> = ({
 
     const url = window.location.href
 
-    // @ts-ignore
     if (window.navigator.share) {
       // web share api
       const shareData = {
@@ -34,7 +33,6 @@ const CommonShareButton: React.FC<CommonShareButtonProps> = ({
         text,
         url,
       }
-      // @ts-ignore
       window.navigator
         .share(shareData)
         .then(() => {

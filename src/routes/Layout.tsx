@@ -29,7 +29,7 @@ const defaultTheme = createTheme({
   },
 })
 
-export interface LayoutProps extends WithNavigate {}
+export type LayoutProps = WithNavigate
 
 export interface LayoutState {
   title: string
@@ -55,7 +55,7 @@ class Layout extends React.Component<LayoutProps, LayoutState> {
     }
   }
 
-  componentDidCatch(error: Error, info: any) {
+  componentDidCatch(error: Error, info: unknown) {
     console.log(error.message, info)
     this.setState({ hasError: true, errorMessage: error.message })
   }

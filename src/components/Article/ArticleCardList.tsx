@@ -14,7 +14,6 @@ export interface ArticleCardListProps extends PaginationProps {
 const ArticleCardList: React.FC<ArticleCardListProps> = ({
   articles,
   onOpen,
-  children,
   ...pagination
 }) => {
   const openArticle = (id: number) => {

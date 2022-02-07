@@ -234,7 +234,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({
                 noWrap={false}
                 className={styles.commentContent}
               >
-                <ReactMarkdown children={content} />
+                <ReactMarkdown>{content}</ReactMarkdown>
               </Typography>
             ) : null}
           </div>

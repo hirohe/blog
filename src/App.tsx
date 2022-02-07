@@ -2,9 +2,7 @@ import React from 'react'
 import RouterConfig from './router'
 
 const App: React.FC = () => {
-  return (
-    <RouterConfig />
-  )
+  return <RouterConfig />
 }
 
 export default App

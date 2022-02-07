@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-// @ts-ignore
-import hljs from 'highlight.js/lib/highlight'
+import hljs from 'highlight.js'
 import { registerLanguage } from './highlightConfig'
 
 export interface CodeBlockProps {
@@ -9,7 +8,7 @@ export interface CodeBlockProps {
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
-  const codeEl = useRef(null)
+  const codeEl = useRef<HTMLElement>(null)
 
   const initHighlight = async (language: string) => {
     return registerLanguage(language, hljs)
@@ -17,7 +16,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
 
   const highlightCode = () => {
     initHighlight(language).then(() => {
-      hljs.highlightBlock(codeEl.current)
+      if (codeEl.current) {
+        hljs.highlightBlock(codeEl.current)
+      }
     })
   }
 

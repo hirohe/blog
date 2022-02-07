@@ -10,7 +10,6 @@ import CommentIcon from '@mui/icons-material/Comment'
 import Divider from '@mui/material/Divider'
 import ReactMarkdown from 'react-markdown'
 /* custom renderers */
-import CodeBlock from './MarkdownRenders/CodeBlock'
 import BlockQuote from './MarkdownRenders/BlockQuote'
 import CalendarTodayIcon from '../icons/CalendarToday'
 import { renderCategory } from '../../utils/common'
@@ -20,12 +19,6 @@ import CommonShareButton from '../CommonShareButton'
 import styles from './Article.module.sass'
 import dateFormat from 'date-fns/format'
 import { Article } from '../../types/Article'
-
-// const renderers = {
-//   ...ReactMarkdown.renderers,
-//   code: CodeBlock,
-//   blockquote: BlockQuote,
-// }
 
 const DATE_FORMAT = 'yy-MM-dd HH:mm'
 
@@ -87,14 +80,15 @@ const ArticleComponent: React.FC<ArticleComponentProps> = ({
 
             <Typography component="div">
               <ReactMarkdown
-                children={article.content || ''}
                 skipHtml={htmlMode === 'skip'}
                 components={{
                   blockquote({ children }) {
-                    return <BlockQuote children={children} />
+                    return <BlockQuote>{children}</BlockQuote>
                   },
                 }}
-              />
+              >
+                {article.content || ''}
+              </ReactMarkdown>
             </Typography>
           </CardContent>
           <Divider light />

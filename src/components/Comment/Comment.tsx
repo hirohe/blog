@@ -17,7 +17,6 @@ import IdenticonAvatar from '../IdenticonAvatar'
 import styles from './Comment.module.sass'
 import { Comment } from '../../types/Comment'
 import useWidth from '../../hooks/useWidth'
-import { Breakpoint } from '@mui/material'
 
 export interface CommentProps {
   comment: Comment
@@ -97,7 +96,7 @@ const CommentComponent: React.FC<CommentProps> = ({
               noWrap={false}
               className={styles.commentContent}
             >
-              <ReactMarkdown children={content} />
+              <ReactMarkdown>{content}</ReactMarkdown>
             </Typography>
           </div>
         </Grid>

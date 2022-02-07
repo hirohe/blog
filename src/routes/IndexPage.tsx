@@ -15,16 +15,16 @@ export interface IndexPageLocationQueryData {
   labels: string[]
 }
 
-export interface IndexPageProps {}
-
 const DefaultQueryData: IndexPageLocationQueryData = {
   page: 1,
   pageSize: 10,
   labels: [],
 }
 
-const IndexPage: React.FC<IndexPageProps> = () => {
-  const [queryData, setQueryData] = useState<IndexPageLocationQueryData | null>(null)
+const IndexPage: React.FC = () => {
+  const [queryData, setQueryData] = useState<IndexPageLocationQueryData | null>(
+    null
+  )
   const [articlePage, setArticlePage] = useState<Page<Article> | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [hasError, setHasError] = useState<boolean>(false)
@@ -35,33 +35,32 @@ const IndexPage: React.FC<IndexPageProps> = () => {
 
   const layoutContext = useContext<ILayoutContext>(LayoutContext)
 
-  const onQueryArticle = useCallback(
-    () => {
-      if (queryData) {
-        const { page, pageSize, labels } = queryData
-        setLoading(true)
-        queryArticle(page, pageSize, { labels })
-          .then((articlePage) => {
-            setHasError(false)
-            setArticlePage(articlePage)
-          })
-          .catch((errorMessage) => {
-            setHasError(true)
-            setErrorMessage(errorMessage ? errorMessage.message : '')
-          })
-          .finally(() => {
-            setLoading(false)
-          })
-      }
-    },
-    [queryData],
-  );
+  const onQueryArticle = useCallback(() => {
+    if (queryData) {
+      const { page, pageSize, labels } = queryData
+      setLoading(true)
+      queryArticle(page, pageSize, { labels })
+        .then((articlePage) => {
+          setHasError(false)
+          setArticlePage(articlePage)
+        })
+        .catch((errorMessage) => {
+          setHasError(true)
+          setErrorMessage(errorMessage ? errorMessage.message : '')
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
+  }, [queryData])
 
   useEffect(() => {
     if (searchParams) {
       setQueryData({
         page: Number(searchParams.get('page') || DefaultQueryData.page),
-        pageSize: Number(searchParams.get('pageSize') || DefaultQueryData.pageSize),
+        pageSize: Number(
+          searchParams.get('pageSize') || DefaultQueryData.pageSize
+        ),
         labels: searchParams.getAll('labels') || DefaultQueryData.labels,
       })
     }

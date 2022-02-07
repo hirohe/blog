@@ -17,7 +17,7 @@ const articleUrl = '/article'
 export function queryArticle(
   page: number,
   pageSize: number,
-  queryMap: any
+  queryMap: Record<string, any> = {}
 ): Promise<Page<Article>> {
   return request
     .get<PageResponseData<ArticleResponseData>>(`${articleUrl}`, {

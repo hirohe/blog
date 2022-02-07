@@ -16,7 +16,6 @@ const CommentList: React.FC<CommentListProps> = ({
   comments,
   onReply,
   onGetRefComment,
-  children,
   ...pagination
 }) => {
   return (

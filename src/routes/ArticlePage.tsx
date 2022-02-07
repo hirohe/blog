@@ -27,9 +27,7 @@ import { useSnackbar } from 'notistack'
 import { OnReplyComment } from '../components/Comment/CommentEditor'
 import { useParams } from 'react-router-dom'
 
-export type ArticlePageProps = {}
-
-const ArticlePage: React.FC<ArticlePageProps> = () => {
+const ArticlePage: React.FC = () => {
   const routeParams = useParams<{
     id: string
   }>()
@@ -59,7 +57,8 @@ const ArticlePage: React.FC<ArticlePageProps> = () => {
         .then((article) => {
           if (article) {
             article.createdAt = new Date(article.createdAt)
-            if (article.updatedAt) article.updatedAt = new Date(article.updatedAt)
+            if (article.updatedAt)
+              article.updatedAt = new Date(article.updatedAt)
             setArticle(article)
           }
         })
@@ -83,7 +82,6 @@ const ArticlePage: React.FC<ArticlePageProps> = () => {
     window.addEventListener('scroll', onWindowScroll, { once: true })
 
     return () => window.removeEventListener('scroll', onWindowScroll)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
