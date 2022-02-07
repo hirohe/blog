@@ -1,5 +1,9 @@
 import React, { ReactElement } from 'react'
-import { Tweet } from 'react-twitter-widgets'
+import loadable from '@loadable/component'
+
+const Tweet = loadable(() => import('react-twitter-widgets'), {
+  resolveComponent: (module) => module.Tweet,
+})
 
 const tweetIdRegex = /^tweet:(\d+)/
 const biliIdRegex = /^bilibili:(\d+):?(\d+)?/
@@ -14,7 +18,7 @@ const BlockQuote: React.FC<BlockQuoteProps> = (props) => {
   if (children) {
     return (
       <div>
-        {(children as React.ReactNodeArray).map((child, i) => {
+        {(children as React.ReactNode[]).map((child, i) => {
           if (child) {
             const text = (child as ReactElement).props?.children[0]
             if (text) {

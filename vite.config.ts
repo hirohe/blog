@@ -6,10 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': {
-        target: 'https://blog.hirohe.me/app',
+      '/app': {
+        target: 'https://blog.hirohe.me',
         secure: false,
-      }
-    }
-  }
+      },
+    },
+  },
 })

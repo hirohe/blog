@@ -16,11 +16,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'prettier'
-  ],
+  plugins: ['react', '@typescript-eslint', 'prettier'],
   settings: {
     react: {
       version: 'detect',
@@ -28,5 +24,6 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error',
+    '@typescript-eslint/no-empty-function': 'off',
   },
 }
